@@ -1,2 +1,2 @@
-# campus-program-radar-catalog
+# student-program-radar-catalog
 
