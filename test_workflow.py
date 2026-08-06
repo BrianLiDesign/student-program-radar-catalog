@@ -146,8 +146,9 @@ class ScraperFrameworkTests(unittest.TestCase):
 
 
 class AsyncScraperFrameworkTests(unittest.TestCase):
-    def setUp(self):
-        self.scraper = DummyAsyncScraper(
+    @staticmethod
+    def _make_scraper():
+        return DummyAsyncScraper(
             "Example",
             "https://example.com",
             enable_cache=False,
@@ -157,26 +158,35 @@ class AsyncScraperFrameworkTests(unittest.TestCase):
         )
 
     def test_non_retryable_404_is_not_retried(self):
-        self.scraper.session = FakeAsyncSession([404])
+        async def scenario():
+            scraper = self._make_scraper()
+            scraper.session = FakeAsyncSession([404])
+            page = await scraper._fetch_page("https://example.com/program")
+            return scraper, page
 
-        page = asyncio.run(self.scraper._fetch_page("https://example.com/program"))
+        scraper, page = asyncio.run(scenario())
 
         self.assertIsNone(page)
-        self.assertEqual(self.scraper.session.calls, 1)
-        self.assertEqual(self.scraper.stats["errors"], 1)
+        self.assertEqual(scraper.session.calls, 1)
+        self.assertEqual(scraper.stats["errors"], 1)
 
     def test_retry_sleep_releases_concurrency_slot(self):
-        self.scraper.session = FakeAsyncSession([500, 200])
         semaphore_states = []
 
-        async def record_sleep(_delay):
-            semaphore_states.append(not self.scraper._semaphore.locked())
+        async def scenario():
+            scraper = self._make_scraper()
+            scraper.session = FakeAsyncSession([500, 200])
 
-        with patch("scraper_framework_async.asyncio.sleep", side_effect=record_sleep):
-            page = asyncio.run(self.scraper._fetch_page("https://example.com/program"))
+            async def record_sleep(_delay):
+                semaphore_states.append(not scraper._semaphore.locked())
 
+            with patch("scraper_framework_async.asyncio.sleep", side_effect=record_sleep):
+                page = await scraper._fetch_page("https://example.com/program")
+            return scraper, page
+
+        scraper, page = asyncio.run(scenario())
         self.assertEqual(page.h1.get_text(), "Program")
-        self.assertEqual(self.scraper.session.calls, 2)
+        self.assertEqual(scraper.session.calls, 2)
         self.assertEqual(semaphore_states, [True])
 
 
