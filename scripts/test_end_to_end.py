@@ -10,12 +10,12 @@ import shutil
 import sys
 
 # Add project root to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from config.scrapers.adobe_scraper import AdobeScraper
 
 from generate_dashboard import generate_readme, get_project_root
 from validate_data import load_programs, load_schema, validate_programs
-
-from config.scrapers.adobe_scraper import AdobeScraper
 
 
 def test_scraper_isolation():
@@ -23,7 +23,7 @@ def test_scraper_isolation():
     print("=== Testing Adobe Scraper in Isolation ===")
 
     try:
-        scraper = AdobeScraper('Adobe', 'https://www.adobe.com')
+        scraper = AdobeScraper("Adobe", "https://www.adobe.com")
         programs = scraper.scrape_programs()
 
         print(f"[PASS] Adobe scraper found {len(programs)} programs")
@@ -73,15 +73,15 @@ def test_storage(programs):
 
     try:
         project_root = get_project_root()
-        active_path = os.path.join(project_root, 'data', 'active', 'programs.json')
+        active_path = os.path.join(project_root, "data", "active", "programs.json")
 
         # Backup original file
-        backup_path = active_path + '.backup'
+        backup_path = active_path + ".backup"
         if os.path.exists(active_path):
             shutil.copy2(active_path, backup_path)
 
         # Write test programs
-        with open(active_path, 'w', encoding='utf-8') as f:
+        with open(active_path, "w", encoding="utf-8") as f:
             json.dump(programs, f, indent=2, ensure_ascii=False)
 
         # Verify file was written correctly
@@ -96,7 +96,9 @@ def test_storage(programs):
 
             return True
         else:
-            print(f"[FAIL] Storage verification failed: expected {len(programs)}, got {len(loaded_programs)}")
+            print(
+                f"[FAIL] Storage verification failed: expected {len(programs)}, got {len(loaded_programs)}"
+            )
 
             # Restore original file even on failure
             if os.path.exists(backup_path):
@@ -106,7 +108,7 @@ def test_storage(programs):
     except Exception as e:
         print(f"[FAIL] Storage error: {e}")
         # Try to restore backup if it exists
-        backup_path = active_path + '.backup'
+        backup_path = active_path + ".backup"
         if os.path.exists(backup_path):
             shutil.move(backup_path, active_path)
         return False
@@ -118,10 +120,10 @@ def test_dashboard_generation():
 
     try:
         project_root = get_project_root()
-        readme_path = os.path.join(project_root, 'README.md')
+        readme_path = os.path.join(project_root, "README.md")
 
         # Backup original README
-        backup_path = readme_path + '.backup'
+        backup_path = readme_path + ".backup"
         if os.path.exists(readme_path):
             shutil.copy2(readme_path, backup_path)
 
@@ -129,12 +131,12 @@ def test_dashboard_generation():
         readme_content = generate_readme()
 
         # Write to temporary file first to verify
-        temp_path = readme_path + '.temp'
-        with open(temp_path, 'w', encoding='utf-8') as f:
+        temp_path = readme_path + ".temp"
+        with open(temp_path, "w", encoding="utf-8") as f:
             f.write(readme_content)
 
         # Check that it looks reasonable
-        if len(readme_content) > 1000 and '# Student Program Radar Catalog' in readme_content:
+        if len(readme_content) > 1000 and "# Student Program Radar Catalog" in readme_content:
             print("[PASS] Dashboard generation successful")
 
             # Restore original README
@@ -161,7 +163,7 @@ def test_dashboard_generation():
     except Exception as e:
         print(f"[FAIL] Dashboard generation error: {e}")
         # Try to restore backup if it exists
-        backup_path = readme_path + '.backup'
+        backup_path = readme_path + ".backup"
         if os.path.exists(backup_path):
             shutil.move(backup_path, readme_path)
         return False

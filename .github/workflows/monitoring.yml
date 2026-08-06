@@ -47,13 +47,36 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from datetime import date, datetime
           from pathlib import Path
 
+          MAX_STALE_DAYS = 60
           programs = json.loads(Path("data/active/programs.json").read_text(encoding="utf-8"))
           ids = [program["id"] for program in programs]
           if not programs:
               raise SystemExit("Catalog contains no active programs")
           if len(ids) != len(set(ids)):
               raise SystemExit("Catalog contains duplicate program IDs")
+
+          today = date.today()
+          stale = []
+          for program in programs:
+              verified = program.get("last_verified")
+              if not verified:
+                  stale.append((program.get("name", "unknown"), "missing last_verified"))
+                  continue
+              days = (today - datetime.strptime(verified, "%Y-%m-%d").date()).days
+              if days > MAX_STALE_DAYS:
+                  stale.append((program.get("name", "unknown"), f"{days} days stale"))
+
+          if stale:
+              print(f"WARNING: {len(stale)} programs exceed {MAX_STALE_DAYS}-day freshness SLO:")
+              for name, reason in stale[:10]:
+                  print(f"  - {name}: {reason}")
+              if len(stale) > 10:
+                  print(f"  ... and {len(stale) - 10} more")
+          else:
+              print("All programs within freshness SLO")
+
           print(f"Catalog health check passed for {len(programs)} active programs")
           PY

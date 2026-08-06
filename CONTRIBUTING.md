@@ -50,7 +50,7 @@ Later phases will allow:
 
 - Pull requests that directly modify program records in `/data/active/` or `/data/archived/`
 - Raw scrape dumps or unprocessed data
-- Changes that violate the CC-BY license
+- Changes that violate the license terms (see [NOTICE](NOTICE))
 - Program suggestions without sufficient verification information
 
 ## Reporting Issues
@@ -71,7 +71,8 @@ When opening an issue, please include:
 
 ## Code of Conduct
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
+By participating, you agree to abide by its terms.
 
 ## Getting Started with Development
 

@@ -55,8 +55,6 @@ venv.bak/
 
 # Local agent and handoff artifacts
 .claude/
-AGENTS.md
-CLAUDE.md
 memory/
 HANDOFF*.md
 *_SUMMARY.md

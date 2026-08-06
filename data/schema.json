@@ -20,7 +20,8 @@
   "properties": {
     "id": {
       "type": "string",
-      "description": "Unique identifier for the program (UUID v5 based on company+name)"
+      "description": "Unique identifier for the program (UUID v5 from normalized company|name via scripts/program_ids.py)",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
     },
     "name": {
       "type": "string",

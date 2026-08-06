@@ -13,7 +13,14 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
 from advanced_validation import AdvancedDataValidator
 from deduplicate_programs import are_programs_duplicate
-from generate_dashboard import calculate_trend_stats, generate_statistics
+from generate_dashboard import (
+    format_status_indicator,
+    generate_compact_stats,
+    generate_program_tables,
+    generate_readme,
+    get_apply_markdown,
+)
+from program_ids import generate_program_id
 from scraper_framework import EnhancedBaseScraper, EnhancedScraperRegistry
 from track_history import ProgramHistoryTracker
 from validate_data import load_schema, validate_programs
@@ -28,6 +35,22 @@ class DummyScraper(EnhancedBaseScraper):
             "name": "Example Program",
             "apply_url": url,
         }
+
+
+class ProgramIdTests(unittest.TestCase):
+    def test_generate_program_id_is_deterministic_uuid_v5(self):
+        first = generate_program_id("Adobe", "Student Ambassador")
+        second = generate_program_id("Adobe", "Student Ambassador")
+        self.assertEqual(first, second)
+        self.assertRegex(
+            first,
+            r"^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        )
+
+    def test_different_programs_get_different_ids(self):
+        a = generate_program_id("Adobe", "Student Ambassador")
+        b = generate_program_id("Microsoft", "Student Ambassador")
+        self.assertNotEqual(a, b)
 
 
 class ScraperFrameworkTests(unittest.TestCase):
@@ -60,9 +83,7 @@ class ScraperFrameworkTests(unittest.TestCase):
         page = self.scraper._fetch_page("https://example.com/program")
 
         self.assertEqual(page.h1.get_text(), "Program")
-        self.scraper.session.get.assert_called_once_with(
-            "https://example.com/program", timeout=15
-        )
+        self.scraper.session.get.assert_called_once_with("https://example.com/program", timeout=15)
 
     def test_fetch_page_failure_is_counted(self):
         self.scraper.session.get = MagicMock(side_effect=RequestException("offline"))
@@ -77,7 +98,7 @@ class ScraperFrameworkTests(unittest.TestCase):
         self.assertEqual(len(programs), 1)
         self.assertEqual(programs[0]["company"], "Example")
         self.assertEqual(programs[0]["source_url"], "https://example.com/program")
-        self.assertEqual(programs[0]["id"], "example_example_program")
+        self.assertEqual(programs[0]["id"], generate_program_id("Example", "Example Program"))
 
 
 class ScraperRegistryTests(unittest.TestCase):
@@ -121,26 +142,29 @@ class CatalogValidationTests(unittest.TestCase):
 
 
 class DashboardTests(unittest.TestCase):
-    def test_statistics_and_trends_are_compatible(self):
+    def test_discover_first_readme_includes_apply_column(self):
         programs = json.loads(
             (PROJECT_ROOT / "data" / "active" / "programs.json").read_text(encoding="utf-8")
         )
+        non_closed = [p for p in programs if p.get("status") != "Closed"]
 
-        stats = generate_statistics(programs)
-        trends = calculate_trend_stats(programs)
+        tables = generate_program_tables(programs)
+        stats = generate_compact_stats(programs)
+        readme = generate_readme()
 
-        self.assertEqual(stats["total_programs"], len(programs))
-        self.assertIn("programs_by_month", trends)
-        self.assertIn("top_5_companies", trends)
+        self.assertIn("| Company | Program | Status | Comp | Location | Apply |", tables)
+        self.assertNotIn(f"{format_status_indicator('Closed')} Closed", tables)
+        self.assertIn(f"**Active Programs:** {len(non_closed)}", stats)
+        self.assertIn("Automation Health", readme)
+        self.assertIn(get_apply_markdown(non_closed[0]["apply_url"]), tables)
+        self.assertEqual(format_status_indicator("Unknown"), "\u26aa")
 
 
 class DataQualityToolTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.programs = json.loads(
-            (PROJECT_ROOT / "data" / "active" / "programs.json").read_text(
-                encoding="utf-8"
-            )
+            (PROJECT_ROOT / "data" / "active" / "programs.json").read_text(encoding="utf-8")
         )
 
     def test_advanced_validator_runs_for_checked_in_catalog(self):
@@ -161,9 +185,7 @@ class DataQualityToolTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as history_dir:
             tracker = ProgramHistoryTracker(history_dir)
             metadata = tracker.record_snapshot(self.programs[:1], source="test")
-            snapshot = json.loads(
-                Path(metadata["snapshot_path"]).read_text(encoding="utf-8")
-            )
+            snapshot = json.loads(Path(metadata["snapshot_path"]).read_text(encoding="utf-8"))
 
             self.assertEqual(
                 snapshot["metadata"]["snapshot_file"],
