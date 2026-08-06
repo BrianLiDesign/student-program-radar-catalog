@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Student Program",
+  "description": "Schema for student ambassador/campus/creator programs",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "company",
+    "apply_url",
+    "status",
+    "role_type",
+    "domain",
+    "eligibility_summary",
+    "location_notes",
+    "compensation_bucket",
+    "last_verified",
+    "short_description"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the program (UUID v5 based on company+name)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Program name",
+      "minLength": 1
+    },
+    "company": {
+      "type": "string",
+      "description": "Company or organization offering the program",
+      "minLength": 1
+    },
+    "apply_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Direct URL to apply for the program"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Accepting",
+        "Rolling",
+        "Cohort upcoming",
+        "Closed",
+        "Unknown"
+      ],
+      "description": "Current status of the program"
+    },
+    "role_type": {
+      "type": "string",
+      "enum": [
+        "Ambassador",
+        "Campus Rep",
+        "Student Expert/Leader",
+        "Creator/Influencer",
+        "Fellowship/Scholarship-adjacent",
+        "Organizer/Coach",
+        "Other"
+      ],
+      "description": "Type of role or position"
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "Tech",
+        "Design/Creative",
+        "Consumer brand",
+        "Finance",
+        "Education/EdTech",
+        "Other"
+      ],
+      "description": "Industry domain of the program"
+    },
+    "eligibility_summary": {
+      "type": "string",
+      "description": "Brief summary of eligibility requirements",
+      "minLength": 1
+    },
+    "location_notes": {
+      "type": "string",
+      "description": "Location information or remote work details"
+    },
+    "compensation_bucket": {
+      "type": "string",
+      "enum": [
+        "Paid",
+        "Unpaid-or-perks",
+        "Unknown"
+      ],
+      "description": "Compensation category"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date",
+      "description": "Date when the program information was last verified"
+    },
+    "short_description": {
+      "type": "string",
+      "description": "Brief 1-2 sentence description of the program",
+      "minLength": 10
+    },
+    "responsibilities": {
+      "type": "array",
+      "description": "List of responsibilities",
+      "items": {
+        "type": "string"
+      }
+    },
+    "time_commitment": {
+      "type": "string",
+      "description": "Expected time commitment (e.g., '10 hours/week')"
+    },
+    "perks_detail": {
+      "type": "string",
+      "description": "Detailed information about perks and benefits"
+    },
+    "deadlines": {
+      "type": "object",
+      "description": "Important dates",
+      "properties": {
+        "application": {
+          "type": "string",
+          "format": "date",
+          "description": "Application deadline"
+        },
+        "program_start": {
+          "type": "string",
+          "format": "date",
+          "description": "Program start date"
+        },
+        "program_end": {
+          "type": "string",
+          "format": "date",
+          "description": "Program end date"
+        }
+      }
+    },
+    "social_requirements": {
+      "type": "string",
+      "description": "Any social media or outreach requirements"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Original source URL where the program was found"
+    },
+    "source_snippet": {
+      "type": "string",
+      "description": "Relevant text excerpt from the source"
+    },
+    "school_restricted": {
+      "type": "boolean",
+      "description": "Whether the program is restricted to certain schools"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any additional notes or comments"
+    }
+  },
+  "additionalProperties": false
+}
