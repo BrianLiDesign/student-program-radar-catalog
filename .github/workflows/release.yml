@@ -1,0 +1,123 @@
+name: Release catalog snapshot
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, with or without the v prefix"
+        required: true
+        default: "v1.0.0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pytest
+
+      - name: Verify release input
+        run: |
+          python -m pytest -q
+          python scripts/validate_data.py
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        env:
+          DISPATCH_VERSION: ${{ inputs.version }}
+        run: |
+          raw_version="${DISPATCH_VERSION:-${GITHUB_REF_NAME}}"
+          version="${raw_version#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version must use semantic versioning, for example v1.2.3" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build release assets
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p release/catalog
+          cp data/active/programs.json release/catalog/programs.json
+          cp data/archived/programs.json release/catalog/archived-programs.json
+          cp README.md LICENSE release/catalog/
+          cp -r docs release/catalog/docs
+
+          python - <<'PY'
+          import csv
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          release = Path("release")
+          programs = json.loads(Path("data/active/programs.json").read_text(encoding="utf-8"))
+          fields = [
+              "id", "name", "company", "apply_url", "status", "role_type", "domain",
+              "eligibility_summary", "location_notes", "compensation_bucket",
+              "last_verified", "short_description",
+          ]
+          with (release / "programs.csv").open("w", newline="", encoding="utf-8") as handle:
+              writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+              writer.writeheader()
+              writer.writerows(programs)
+
+          metadata = {
+              "version": os.environ["VERSION"],
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "source_repository": os.environ["GITHUB_REPOSITORY"],
+              "source_commit": os.environ["GITHUB_SHA"],
+              "license": "CC-BY-4.0",
+              "active_programs": len(programs),
+          }
+          (release / "metadata.json").write_text(
+              json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
+          )
+          PY
+
+          cd release
+          zip -qr "student-program-radar-catalog-${VERSION}.zip" catalog
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            --target "$GITHUB_SHA" \
+            --title "Student Program Radar Catalog $TAG" \
+            --generate-notes \
+            "release/student-program-radar-catalog-${VERSION}.zip" \
+            "release/programs.csv" \
+            "release/metadata.json" \
+            "data/active/programs.json#programs.json" \
+            "data/archived/programs.json#archived-programs.json"

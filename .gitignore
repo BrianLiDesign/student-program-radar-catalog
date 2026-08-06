@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.python-version
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+cache/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data backups
+*.bak
+*.backup
+
+# Misc
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Local agent and handoff artifacts
+.claude/
+AGENTS.md
+CLAUDE.md
+memory/
+HANDOFF*.md
+*_SUMMARY.md
+PLAN.md
+PENDING_TASKS_SUMMARY.md
+ERROR_HANDLING_IMPLEMENTATION_PLAN.md
+IMPROVEMENT_RECOMMENDATIONS.md
+IMPLEMENTATION_COMPLETE.txt
+debug_path.py
+demo_*.py
+scalable_async_processing.py
+test_comprehensive.py
+test_enhancements.py
+test_scraper_instantiation.py
+test_scrapers.py
+test_simple.py
+data/active/test_programs.json
+data/active/example_programs.json
+SCRAPER_VERIFICATION.md
