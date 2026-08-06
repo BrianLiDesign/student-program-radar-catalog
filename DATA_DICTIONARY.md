@@ -7,10 +7,10 @@ This document provides a comprehensive reference for all fields in the Student P
 These fields must be present in every program record:
 
 ### id
-- **Type**: String (UUID v5 format)
-- **Description**: Unique identifier for the program (UUID v5 based on company+name)
-- **Constraints**: Must be a valid UUID version 5
-- **Example**: `"550e8400-e29b-41d4-a716-446655440000"`
+- **Type**: String (UUID format)
+- **Description**: Unique identifier for the program. New records use UUID v5 generated from normalized `company|name` via `scripts/program_ids.py`. Legacy seed data may use placeholder UUIDs until refreshed by automation.
+- **Constraints**: Must be a valid UUID string; scrapers must not invent arbitrary IDs
+- **Example**: `"19a10f31-b04b-5135-b79f-555cff1c3bad"` (v5 for `Adobe|Adobe Student Ambassador`)
 
 ### name
 - **Type**: String

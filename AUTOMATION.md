@@ -9,7 +9,22 @@ The catalog uses GitHub Actions for pull-request validation, scheduled refreshes
 - `.github/workflows/monitoring.yml` validates JSON, schema compliance, a non-empty active catalog, and unique IDs daily.
 - `.github/workflows/release.yml` validates the repository and publishes a ZIP, CSV, metadata, and JSON snapshot for semantic version tags.
 
+- `.github/workflows/scorecard.yml` runs OpenSSF Scorecard weekly and publishes SARIF results.
+- `.github/workflows/secret-scanning.yml` scans for leaked secrets with Gitleaks.
+- `.github/workflows/dependency-review.yml` reviews dependency changes on pull requests.
+
 Workflow permissions are declared explicitly. CI and monitoring are read-only; refresh receives repository and pull-request write access; release receives repository-content write access.
+
+## Makefile shortcuts
+
+```bash
+make install-dev   # runtime + dev deps + pre-commit
+make lint test validate e2e
+make scrape        # local catalog refresh
+make dq            # data quality pipeline
+```
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for full setup instructions.
 
 ## Local commands
 

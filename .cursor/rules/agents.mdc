@@ -1,0 +1,7 @@
+---
+description: Student Program Radar Catalog agent rules
+globs:
+  - "**/*"
+---
+
+Follow [AGENTS.md](../../AGENTS.md) for build commands, boundaries, and PR rules.

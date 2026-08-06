@@ -94,7 +94,7 @@ jobs:
               "generated_at": datetime.now(timezone.utc).isoformat(),
               "source_repository": os.environ["GITHUB_REPOSITORY"],
               "source_commit": os.environ["GITHUB_SHA"],
-              "license": "CC-BY-4.0",
+              "license": "CC-BY-4.0 (data); MIT (code)",
               "active_programs": len(programs),
           }
           (release / "metadata.json").write_text(

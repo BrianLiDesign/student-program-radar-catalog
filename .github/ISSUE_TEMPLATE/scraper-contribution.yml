@@ -1,0 +1,47 @@
+name: Scraper contribution
+description: Propose or discuss a new company scraper
+title: "[Scraper] "
+labels:
+  - scraper
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when adding or improving a scraper for an allowlisted company.
+        See [AUTOMATION.md](../../AUTOMATION.md) and [docs/SCRAPER_CHECKLIST.md](../../docs/SCRAPER_CHECKLIST.md).
+  - type: input
+    id: company
+    attributes:
+      label: Company name
+    validations:
+      required: true
+  - type: dropdown
+    id: allowlist-status
+    attributes:
+      label: Allowlist status
+      options:
+        - Already on allowlist
+        - Needs allowlist addition (justify below)
+    validations:
+      required: true
+  - type: input
+    id: base-url
+    attributes:
+      label: Company student programs base URL
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Scraping approach
+      description: Pages to scrape, parsing strategy, rate-limit considerations.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: Scraper subclasses EnhancedBaseScraper
+        - label: Tests use mocked HTTP responses (no live network in CI)
+        - label: make lint test validate e2e passes locally

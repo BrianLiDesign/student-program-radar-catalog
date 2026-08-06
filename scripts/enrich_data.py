@@ -6,7 +6,7 @@ Adds derived fields to enhance program data for analysis and display
 import json
 import re
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Optional
 
 
 def enrich_program_data(program: dict) -> dict:
@@ -18,10 +18,7 @@ def enrich_program_data(program: dict) -> dict:
     enriched = program.copy()
 
     # Add metadata about enrichment
-    enriched["_enrichment"] = {
-        "timestamp": datetime.now().isoformat(),
-        "version": "1.0"
-    }
+    enriched["_enrichment"] = {"timestamp": datetime.now().isoformat(), "version": "1.0"}
 
     # 1. Program duration calculation from deadlines
     enriched = _add_program_duration(enriched)
@@ -41,6 +38,7 @@ def enrich_program_data(program: dict) -> dict:
     enriched = _add_engagement_indicators(enriched)
 
     return enriched
+
 
 def _add_program_duration(program: dict) -> dict:
     """Calculate program duration from deadlines"""
@@ -71,17 +69,25 @@ def _add_program_duration(program: dict) -> dict:
                     remaining_days = days % 365
                     if remaining_days >= 30:
                         months = remaining_days // 30
-                        program["program_duration_human"] = f"{years} year{'s' if years > 1 else ''}, {months} month{'s' if months > 1 else ''}"
+                        program["program_duration_human"] = (
+                            f"{years} year{'s' if years > 1 else ''}, {months} month{'s' if months > 1 else ''}"
+                        )
                     else:
-                        program["program_duration_human"] = f"{years} year{'s' if years > 1 else ''}"
+                        program["program_duration_human"] = (
+                            f"{years} year{'s' if years > 1 else ''}"
+                        )
                 elif days >= 30:
                     months = days // 30
                     remaining_days = days % 30
                     if remaining_days >= 7:
                         weeks = remaining_days // 7
-                        program["program_duration_human"] = f"{months} month{'s' if months > 1 else ''}, {weeks} week{'s' if weeks > 1 else ''}"
+                        program["program_duration_human"] = (
+                            f"{months} month{'s' if months > 1 else ''}, {weeks} week{'s' if weeks > 1 else ''}"
+                        )
                     else:
-                        program["program_duration_human"] = f"{months} month{'s' if months > 1 else ''}"
+                        program["program_duration_human"] = (
+                            f"{months} month{'s' if months > 1 else ''}"
+                        )
                 elif days >= 7:
                     weeks = days // 7
                     program["program_duration_human"] = f"{weeks} week{'s' if weeks > 1 else ''}"
@@ -93,6 +99,7 @@ def _add_program_duration(program: dict) -> dict:
             pass
 
     return program
+
 
 def _add_application_complexity_score(program: dict) -> dict:
     """
@@ -136,8 +143,19 @@ def _add_application_complexity_score(program: dict) -> dict:
     if social_req and isinstance(social_req, str):
         social_req_lower = social_req.lower()
         # Look for indicators of significant social media requirements
-        social_indicators = ["post", "share", "content", "follower", "engagement",
-                           "social media", "twitter", "instagram", "linkedin", "blog", "video"]
+        social_indicators = [
+            "post",
+            "share",
+            "content",
+            "follower",
+            "engagement",
+            "social media",
+            "twitter",
+            "instagram",
+            "linkedin",
+            "blog",
+            "video",
+        ]
         matches = sum(1 for indicator in social_indicators if indicator in social_req_lower)
         if matches >= 3:
             score += 15
@@ -157,7 +175,13 @@ def _add_application_complexity_score(program: dict) -> dict:
     # Look for multiple deadlines, complex application requirements
     deadlines = program.get("deadlines", {})
     if isinstance(deadlines, dict):
-        deadline_count = len([k for k in deadlines.keys() if k not in ["application", "program_start", "program_end"]])
+        deadline_count = len(
+            [
+                k
+                for k in deadlines.keys()
+                if k not in ["application", "program_start", "program_end"]
+            ]
+        )
         if deadline_count >= 3:
             score += 20
         elif deadline_count >= 2:
@@ -175,14 +199,25 @@ def _add_application_complexity_score(program: dict) -> dict:
     text_fields = [
         program.get("short_description", ""),
         program.get("eligibility_summary", ""),
-        " ".join(program.get("responsibilities", [])) if isinstance(program.get("responsibilities"), list) else ""
+        " ".join(program.get("responsibilities", []))
+        if isinstance(program.get("responsibilities"), list)
+        else "",
     ]
     combined_text = " ".join(text_fields).lower()
 
     competitive_indicators = [
-        "competitive", "selective", "prestigious", "elite", "top-tier",
-        "rigorous", "intensive", "rigorous selection", "limited spots",
-        "application required", "interview", "selection process"
+        "competitive",
+        "selective",
+        "prestigious",
+        "elite",
+        "top-tier",
+        "rigorous",
+        "intensive",
+        "rigorous selection",
+        "limited spots",
+        "application required",
+        "interview",
+        "selection process",
     ]
 
     matches = sum(1 for indicator in competitive_indicators if indicator in combined_text)
@@ -213,6 +248,7 @@ def _add_application_complexity_score(program: dict) -> dict:
 
     return program
 
+
 def _extract_hours_per_week(time_str: str) -> Optional[float]:
     """Extract hours per week from time commitment string"""
     if not isinstance(time_str, str):
@@ -220,10 +256,10 @@ def _extract_hours_per_week(time_str: str) -> Optional[float]:
 
     # Look for patterns like "10 hours/week", "5-15 hrs/wk", etc.
     patterns = [
-        r'(\d+(?:(\d+(?:\.\d+)?)\s*[-－]\s*(\d+(?:\.\d+)?))\s*(?:hours?|hrs?)\s*(?:/|per)?\s*week',
-        r'(?:(\d+(?:\.\d+)?)\s*(?:hours?|hrs?))\s*(?:/|per)?\s*week',
-        r'(?:(\d+(?:\.\d+)?)\s*[-－]\s*(\d+(?:\.\d+)?))\s*(?:hours?|hrs?)',
-        r'(?:(\d+(?:\.\d+)?)\s*(?:hours?|hrs?))'
+        r"(\d+(?:(\d+(?:\.\d+)?)\s*[-－]\s*(\d+(?:\.\d+)?))\s*(?:hours?|hrs?)\s*(?:/|per)?\s*week",
+        r"(?:(\d+(?:\.\d+)?)\s*(?:hours?|hrs?))\s*(?:/|per)?\s*week",
+        r"(?:(\d+(?:\.\d+)?)\s*[-－]\s*(\d+(?:\.\d+)?))\s*(?:hours?|hrs?)",
+        r"(?:(\d+(?:\.\d+)?)\s*(?:hours?|hrs?))",
     ]
 
     for pattern in patterns:
@@ -242,6 +278,7 @@ def _extract_hours_per_week(time_str: str) -> Optional[float]:
                 continue
 
     return None
+
 
 def _add_geotagging(program: dict) -> dict:
     """Add geographical information based on location notes"""
@@ -275,8 +312,21 @@ def _add_geotagging(program: dict) -> dict:
 
     # Simple region/country detection (could be enhanced with a proper geocoding service)
     us_indicators = ["united states", "usa", "us ", ", us", "united states of america", "america"]
-    eu_indicators = ["europe", "european union", "eu ", "uk", "united kingdom", "france", "germany",
-                     "spain", "italy", "netherlands", "sweden", "canada", "australia"]
+    eu_indicators = [
+        "europe",
+        "european union",
+        "eu ",
+        "uk",
+        "united kingdom",
+        "france",
+        "germany",
+        "spain",
+        "italy",
+        "netherlands",
+        "sweden",
+        "canada",
+        "australia",
+    ]
     asia_indicators = ["asia", "asia-pacific", "jap", "china", "india", "singapore", "korea"]
 
     # Check for country/region mentions
@@ -293,21 +343,67 @@ def _add_geotagging(program: dict) -> dict:
     if any(indicator in location_lower for indicator in asia_indicators):
         program["detected_regions"].append("Asia-Pacific")
 
-# US states for more detailed detection
+    # US states for more detailed detection
     us_states = [
-        "alabama", "alaska", "arizona", "arkansas", "california", "colorado", "connecticut",
-        "delaware", "florida", "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa",
-        "kansas", "kentucky", "louisiana", "maine", "maryland", "massachusetts", "michigan",
-        "minnesota", "mississippi", "missouri", "montana", "nebraska", "nevada", "new hampshire",
-        "new jersey", "new mexico", "new york", "north carolina", "north dakota", "ohio",
-        "oklahoma", "oregon", "pennsylvania", "rhode island", "south carolina", "south dakota",
-        "tennessee", "texas", "utah", "vermont", "virginia", "washington", "west virginia",
-        "wisconsin", "wyoming", "district of columbia", "dc"
+        "alabama",
+        "alaska",
+        "arizona",
+        "arkansas",
+        "california",
+        "colorado",
+        "connecticut",
+        "delaware",
+        "florida",
+        "georgia",
+        "hawaii",
+        "idaho",
+        "illinois",
+        "indiana",
+        "iowa",
+        "kansas",
+        "kentucky",
+        "louisiana",
+        "maine",
+        "maryland",
+        "massachusetts",
+        "michigan",
+        "minnesota",
+        "mississippi",
+        "missouri",
+        "montana",
+        "nebraska",
+        "nevada",
+        "new hampshire",
+        "new jersey",
+        "new mexico",
+        "new york",
+        "north carolina",
+        "north dakota",
+        "ohio",
+        "oklahoma",
+        "oregon",
+        "pennsylvania",
+        "rhode island",
+        "south carolina",
+        "south dakota",
+        "tennessee",
+        "texas",
+        "utah",
+        "vermont",
+        "virginia",
+        "washington",
+        "west virginia",
+        "wisconsin",
+        "wyoming",
+        "district of columbia",
+        "dc",
     ]
 
     for state in us_states:
         if state in location_lower:
-            program["detected_cities"].append(state.title())  # Simplified - would be better with actual city detection
+            program["detected_cities"].append(
+                state.title()
+            )  # Simplified - would be better with actual city detection
             if "United States" not in program["detected_countries"]:
                 program["detected_countries"].append("United States")
             if "North America" not in program["detected_regions"]:
@@ -323,7 +419,7 @@ def _add_geotagging(program: dict) -> dict:
         "los angeles": ["los angeles", "la ", "santa monica"],
         "austin": ["austin"],
         "chicago": ["chicago"],
-        "atlanta": ["atlanta"]
+        "atlanta": ["atlanta"],
     }
 
     for region, cities in tech_hubs.items():
@@ -339,6 +435,7 @@ def _add_geotagging(program: dict) -> dict:
     program["detected_cities"] = list(set(program["detected_cities"]))
 
     return program
+
 
 def _add_temporal_features(program: dict) -> dict:
     """Add time-based features"""
@@ -377,7 +474,9 @@ def _add_temporal_features(program: dict) -> dict:
             try:
                 app_deadline = datetime.strptime(app_deadline_str, "%Y-%m-%d")
                 days_until_deadline = (app_deadline - now).days
-                program["days_until_application_deadline"] = max(0, days_until_deadline)  # Don't show negative
+                program["days_until_application_deadline"] = max(
+                    0, days_until_deadline
+                )  # Don't show negative
 
                 # Urgency score (0-100, where 100 is very urgent/deadline soon)
                 if days_until_deadline < 0:
@@ -402,6 +501,7 @@ def _add_temporal_features(program: dict) -> dict:
 
     return program
 
+
 def _add_engagement_indicators(program: dict) -> dict:
     """Add indicators about potential engagement/viral coefficient"""
     score = 0
@@ -424,9 +524,22 @@ def _add_engagement_indicators(program: dict) -> dict:
     # Content creation expectations
     responsibilities = program.get("responsibilities", [])
     if isinstance(responsibilities, list):
-        content_keywords = ["create", "content", "design", "video", "photo", "blog", "post", "social"]
-        content_count = sum(1 for resp in responsibilities
-                          if isinstance(resp, str) and any(keyword in resp.lower() for keyword in content_keywords))
+        content_keywords = [
+            "create",
+            "content",
+            "design",
+            "video",
+            "photo",
+            "blog",
+            "post",
+            "social",
+        ]
+        content_count = sum(
+            1
+            for resp in responsibilities
+            if isinstance(resp, str)
+            and any(keyword in resp.lower() for keyword in content_keywords)
+        )
         if content_count >= 3:
             score += 20
         elif content_count >= 2:
@@ -449,7 +562,16 @@ def _add_engagement_indicators(program: dict) -> dict:
         score += 10
 
     # Innovation/creativity indicators
-    innovation_keywords = ["innovate", "innovation", "creative", "creativity", "design", "build", "develop", "launch"]
+    innovation_keywords = [
+        "innovate",
+        "innovation",
+        "creative",
+        "creativity",
+        "design",
+        "build",
+        "develop",
+        "launch",
+    ]
     innovation_matches = sum(1 for keyword in innovation_keywords if keyword in combined_text)
     if innovation_matches >= 3:
         score += 15
@@ -476,7 +598,8 @@ def _add_engagement_indicators(program: dict) -> dict:
 
     return program
 
-def batch_enrich_programs(programs: List[Dict]) -> List[Dict]:
+
+def batch_enrich_programs(programs: list[dict]) -> list[dict]:
     """
     Enrich a batch of programs and add comparative analysis
     """
@@ -492,6 +615,7 @@ def batch_enrich_programs(programs: List[Dict]) -> List[Dict]:
 
     return enriched_programs
 
+
 def add_derived_fields_schema(schema: dict) -> dict:
     """
     Add definitions for derived fields to the JSON schema
@@ -505,93 +629,87 @@ def add_derived_fields_schema(schema: dict) -> dict:
         "program_duration_days": {
             "type": "integer",
             "minimum": 0,
-            "description": "Program duration in days calculated from start/end dates"
+            "description": "Program duration in days calculated from start/end dates",
         },
         "program_duration_weeks": {
             "type": "number",
             "minimum": 0,
-            "description": "Program duration in weeks"
+            "description": "Program duration in weeks",
         },
         "program_duration_months": {
             "type": "number",
             "minimum": 0,
-            "description": "Program duration in months"
+            "description": "Program duration in months",
         },
         "program_duration_human": {
             "type": "string",
-            "description": "Human-readable program duration"
+            "description": "Human-readable program duration",
         },
         "application_complexity_score": {
             "type": "number",
             "minimum": 0,
             "maximum": 100,
-            "description": "Calculated application complexity score (0-100)"
+            "description": "Calculated application complexity score (0-100)",
         },
         "application_complexity_level": {
             "type": "string",
             "enum": ["Very Low", "Low", "Medium", "High", "Very High"],
-            "description": "Categorical application complexity level"
+            "description": "Categorical application complexity level",
         },
-        "is_remote": {
-            "type": "boolean",
-            "description": "Whether the program is remote/virtual"
-        },
-        "is_hybrid": {
-            "type": "boolean",
-            "description": "Whether the program is hybrid format"
-        },
+        "is_remote": {"type": "boolean", "description": "Whether the program is remote/virtual"},
+        "is_hybrid": {"type": "boolean", "description": "Whether the program is hybrid format"},
         "is_location_specific": {
             "type": "boolean",
-            "description": "Whether the program is location-specific"
+            "description": "Whether the program is location-specific",
         },
         "detected_regions": {
             "type": "array",
             "items": {"type": "string"},
-            "description": "Detected geographical regions"
+            "description": "Detected geographical regions",
         },
         "detected_countries": {
             "type": "array",
             "items": {"type": "string"},
-            "description": "Detected countries"
+            "description": "Detected countries",
         },
         "detected_cities": {
             "type": "array",
             "items": {"type": "string"},
-            "description": "Detected cities"
+            "description": "Detected cities",
         },
         "days_since_last_verified": {
             "type": "integer",
             "minimum": 0,
-            "description": "Days since the program information was last verified"
+            "description": "Days since the program information was last verified",
         },
         "data_freshness_score": {
             "type": "number",
             "minimum": 0,
             "maximum": 100,
-            "description": "Score indicating how fresh the data is (0-100)"
+            "description": "Score indicating how fresh the data is (0-100)",
         },
         "days_until_application_deadline": {
             "type": "integer",
             "minimum": 0,
-            "description": "Days until application deadline"
+            "description": "Days until application deadline",
         },
         "application_deadline_urgency_score": {
             "type": "number",
             "minimum": 0,
             "maximum": 100,
-            "description": "Urgency score based on proximity to application deadline"
+            "description": "Urgency score based on proximity to application deadline",
         },
         "engagement_potential_score": {
             "type": "number",
             "minimum": 0,
             "maximum": 100,
-            "description": "Score indicating potential for engagement/viral spread"
+            "description": "Score indicating potential for engagement/viral spread",
         },
         "engagement_level": {
             "type": "string",
             "enum": ["Very Low", "Low", "Medium", "High", "Very High"],
-            "description": "Categorical engagement level"
-        }
+            "description": "Categorical engagement level",
+        },
     }
 
     # Add properties to schema
@@ -603,6 +721,7 @@ def add_derived_fields_schema(schema: dict) -> dict:
     # Note: We don't add these to "required" since they are derived/computed fields
 
     return updated_schema
+
 
 if __name__ == "__main__":
     # Example usage and testing
@@ -626,20 +745,20 @@ if __name__ == "__main__":
             "Create weekly social media content",
             "Host monthly events on campus",
             "Engage with student community",
-            "Provide feedback on products"
+            "Provide feedback on products",
         ],
         "time_commitment": "10-15 hours/week",
         "perks_detail": "Stipend, professional development, networking opportunities",
         "deadlines": {
             "application": "2024-03-01",
             "program_start": "2024-06-01",
-            "program_end": "2025-05-31"
+            "program_end": "2025-05-31",
         },
         "social_requirements": "Minimum 3 posts per week on Instagram and TikTok using #TestAmbassador",
         "source_url": "https://example.com/program",
         "source_snippet": "Join our ambassador program to represent our brand.",
         "school_restricted": False,
-        "notes": "Annual program"
+        "notes": "Annual program",
     }
 
     print("Testing enrichment on sample program...")

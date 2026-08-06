@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
+
 class ProgramHistoryTracker:
     """Tracks changes to program records over time"""
 
@@ -34,16 +35,16 @@ class ProgramHistoryTracker:
             "metadata": {
                 "created": datetime.now().isoformat(),
                 "last_updated": datetime.now().isoformat(),
-                "total_entries": 0
+                "total_entries": 0,
             },
-            "entries": []
+            "entries": [],
         }
         self._save_changelog(changelog)
 
     def _load_changelog(self):
         """Load the changelog from file"""
         try:
-            with open(self.changelog_file, 'r', encoding='utf-8') as f:
+            with open(self.changelog_file, encoding="utf-8") as f:
                 return json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self._init_changelog()
@@ -52,7 +53,7 @@ class ProgramHistoryTracker:
     def _save_changelog(self, changelog):
         """Save the changelog to file"""
         changelog["metadata"]["last_updated"] = datetime.now().isoformat()
-        with open(self.changelog_file, 'w', encoding='utf-8') as f:
+        with open(self.changelog_file, "w", encoding="utf-8") as f:
             json.dump(changelog, f, indent=2, ensure_ascii=False)
 
     def _compute_record_hash(self, record):
@@ -60,13 +61,13 @@ class ProgramHistoryTracker:
         # Create a copy without volatile fields for comparison
         comparison_dict = deepcopy(record)
         # Remove fields that change frequently but don't indicate semantic changes
-        fields_to_ignore = ['last_verified']  # This changes every scrape
+        fields_to_ignore = ["last_verified"]  # This changes every scrape
         for field in fields_to_ignore:
             comparison_dict.pop(field, None)
 
         # Sort keys for consistent hashing
         json_str = json.dumps(comparison_dict, sort_keys=True, ensure_ascii=False)
-        return hashlib.md5(json_str.encode('utf-8')).hexdigest()
+        return hashlib.md5(json_str.encode("utf-8")).hexdigest()
 
     def _detect_significant_changes(self, old_record, new_record):
         """
@@ -77,11 +78,11 @@ class ProgramHistoryTracker:
 
         # Define fields and their significance descriptions
         field_checks = [
-            ('status', 'Status changed'),
-            ('role_type', 'Role type changed'),
-            ('domain', 'Domain changed'),
-            ('compensation_bucket', 'Compensation changed'),
-            ('school_restricted', 'School restriction changed'),
+            ("status", "Status changed"),
+            ("role_type", "Role type changed"),
+            ("domain", "Domain changed"),
+            ("compensation_bucket", "Compensation changed"),
+            ("school_restricted", "School restriction changed"),
         ]
 
         for field, description in field_checks:
@@ -91,22 +92,23 @@ class ProgramHistoryTracker:
                 changes.append(f"{description}: {old_val} → {new_val}")
 
         # Check for date changes in deadlines
-        if 'deadlines' in old_record and 'deadlines' in new_record:
-            date_fields = ['application', 'program_start', 'program_end']
+        if "deadlines" in old_record and "deadlines" in new_record:
+            date_fields = ["application", "program_start", "program_end"]
             for date_field in date_fields:
-                old_date = old_record.get('deadlines', {}).get(date_field)
-                new_date = new_record.get('deadlines', {}).get(date_field)
+                old_date = old_record.get("deadlines", {}).get(date_field)
+                new_date = new_record.get("deadlines", {}).get(date_field)
                 if old_date != new_date and old_date and new_date:
                     changes.append(f"Deadline changed ({date_field}): {old_date} → {new_date}")
 
         # Check for significant text changes (using simple similarity)
-        text_fields = ['short_description', 'eligibility_summary', 'location_notes']
+        text_fields = ["short_description", "eligibility_summary", "location_notes"]
         for field in text_fields:
-            old_val = old_record.get(field, '')
-            new_val = new_record.get(field, '')
+            old_val = old_record.get(field, "")
+            new_val = new_record.get(field, "")
             if old_val and new_val:
                 # Simple similarity check - if changed significantly, consider it
                 from difflib import SequenceMatcher
+
                 similarity = SequenceMatcher(None, old_val.lower(), new_val.lower()).ratio()
                 if similarity < 0.8:  # More than 20% change
                     changes.append(f"Significant change in {field} (similarity: {similarity:.2f})")
@@ -131,12 +133,12 @@ class ProgramHistoryTracker:
                 "timestamp": timestamp.isoformat(),
                 "source": source,
                 "program_count": len(programs),
-                "snapshot_file": snapshot_filename
+                "snapshot_file": snapshot_filename,
             },
-            "programs": programs
+            "programs": programs,
         }
 
-        with open(snapshot_path, 'w', encoding='utf-8') as f:
+        with open(snapshot_path, "w", encoding="utf-8") as f:
             json.dump(snapshot_data, f, indent=2, ensure_ascii=False)
 
         logger.info(f"Saved snapshot: {snapshot_path}")
@@ -152,7 +154,7 @@ class ProgramHistoryTracker:
             "snapshot_path": snapshot_path,
             "timestamp": timestamp.isoformat(),
             "program_count": len(programs),
-            "changes_detected": len(changes)
+            "changes_detected": len(changes),
         }
 
     def _compare_with_previous_snapshot(self, current_programs, current_snapshot_path):
@@ -166,7 +168,9 @@ class ProgramHistoryTracker:
             if f.startswith("programs_snapshot_") and f.endswith(".json"):
                 # Extract timestamp from filename for sorting
                 try:
-                    timestamp_str = f[18:-5]  # Remove "programs_snapshot_" prefix and ".json" suffix
+                    timestamp_str = f[
+                        18:-5
+                    ]  # Remove "programs_snapshot_" prefix and ".json" suffix
                     timestamp = datetime.strptime(timestamp_str, "%Y%m%d_%H%M%S")
                     snapshot_files.append((timestamp, f))
                 except ValueError:
@@ -194,7 +198,7 @@ class ProgramHistoryTracker:
 
         try:
             # Load previous snapshot
-            with open(most_recent_path, 'r', encoding='utf-8') as f:
+            with open(most_recent_path, encoding="utf-8") as f:
                 previous_snapshot = json.load(f)
 
             previous_programs = previous_snapshot.get("programs", [])
@@ -212,8 +216,8 @@ class ProgramHistoryTracker:
         changes = []
 
         # Create lookup dictionaries by ID
-        old_by_id = {p.get('id'): p for p in old_programs if p.get('id')}
-        new_by_id = {p.get('id'): p for p in new_programs if p.get('id')}
+        old_by_id = {p.get("id"): p for p in old_programs if p.get("id")}
+        new_by_id = {p.get("id"): p for p in new_programs if p.get("id")}
 
         # Find added programs
         new_ids = set(new_by_id.keys())
@@ -225,24 +229,28 @@ class ProgramHistoryTracker:
         # Record additions
         for prog_id in added_ids:
             program = new_by_id[prog_id]
-            changes.append({
-                "type": "added",
-                "program_id": prog_id,
-                "program_name": program.get('name', 'Unknown'),
-                "company": program.get('company', 'Unknown'),
-                "description": f"New program added: {program.get('name')} ({program.get('company')})"
-            })
+            changes.append(
+                {
+                    "type": "added",
+                    "program_id": prog_id,
+                    "program_name": program.get("name", "Unknown"),
+                    "company": program.get("company", "Unknown"),
+                    "description": f"New program added: {program.get('name')} ({program.get('company')})",
+                }
+            )
 
         # Record removals
         for prog_id in removed_ids:
             program = old_by_id[prog_id]
-            changes.append({
-                "type": "removed",
-                "program_id": prog_id,
-                "program_name": program.get('name', 'Unknown'),
-                "company": program.get('company', 'Unknown'),
-                "description": f"Program removed: {program.get('name')} ({program.get('company')})"
-            })
+            changes.append(
+                {
+                    "type": "removed",
+                    "program_id": prog_id,
+                    "program_name": program.get("name", "Unknown"),
+                    "company": program.get("company", "Unknown"),
+                    "description": f"Program removed: {program.get('name')} ({program.get('company')})",
+                }
+            )
 
         # Check for modifications in common programs
         for prog_id in common_ids:
@@ -252,14 +260,16 @@ class ProgramHistoryTracker:
             # Check if significant changes occurred
             significant_changes = self._detect_significant_changes(old_program, new_program)
             if significant_changes:
-                changes.append({
-                    "type": "modified",
-                    "program_id": prog_id,
-                    "program_name": old_program.get('name', 'Unknown'),
-                    "company": old_program.get('company', 'Unknown'),
-                    "changes": significant_changes,
-                    "description": f"Program modified: {old_program.get('name')} ({old_program.get('company')}) - {len(significant_changes)} changes"
-                })
+                changes.append(
+                    {
+                        "type": "modified",
+                        "program_id": prog_id,
+                        "program_name": old_program.get("name", "Unknown"),
+                        "company": old_program.get("company", "Unknown"),
+                        "changes": significant_changes,
+                        "description": f"Program modified: {old_program.get('name')} ({old_program.get('company')}) - {len(significant_changes)} changes",
+                    }
+                )
 
         return changes
 
@@ -275,7 +285,7 @@ class ProgramHistoryTracker:
                 "program_id": change["program_id"],
                 "program_name": change["program_name"],
                 "company": change["company"],
-                "description": change["description"]
+                "description": change["description"],
             }
 
             # Add type-specific fields
@@ -293,6 +303,7 @@ class ProgramHistoryTracker:
 
         logger.info(f"Recorded {len(changes)} changes to changelog")
 
+
 def track_program_changes(programs, source="scraper_run"):
     """
     Convenience function to track changes in a program set
@@ -300,6 +311,7 @@ def track_program_changes(programs, source="scraper_run"):
     """
     tracker = ProgramHistoryTracker()
     return tracker.record_snapshot(programs, source)
+
 
 def get_recent_changes(hours=24):
     """
@@ -319,6 +331,7 @@ def get_recent_changes(hours=24):
 
     return sorted(recent_changes, key=lambda x: x["timestamp"], reverse=True)
 
+
 def get_program_history(program_id):
     """
     Get all historical changes for a specific program
@@ -327,12 +340,10 @@ def get_program_history(program_id):
     tracker = ProgramHistoryTracker()
     changelog = tracker._load_changelog()
 
-    program_changes = [
-        entry for entry in changelog["entries"]
-        if entry["program_id"] == program_id
-    ]
+    program_changes = [entry for entry in changelog["entries"] if entry["program_id"] == program_id]
 
     return sorted(program_changes, key=lambda x: x["timestamp"])
+
 
 def get_latest_snapshot():
     """
@@ -365,11 +376,12 @@ def get_latest_snapshot():
     most_recent_path = os.path.join(tracker.snapshots_dir, most_recent_file)
 
     try:
-        with open(most_recent_path, 'r', encoding='utf-8') as f:
+        with open(most_recent_path, encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         logger.error(f"Could not load latest snapshot: {e}")
         return None
+
 
 if __name__ == "__main__":
     # Example usage

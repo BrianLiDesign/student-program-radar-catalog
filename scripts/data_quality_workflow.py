@@ -12,7 +12,7 @@ import os
 import sys
 
 # Add scripts directory to path
-script_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts')
+script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
 
 # Import our modules
@@ -21,15 +21,17 @@ try:
     from deduplicate_programs import deduplicate_programs
     from enrich_data import batch_enrich_programs
     from track_history import track_program_changes
+
     MODULES_AVAILABLE = True
 except ImportError as e:
     print(f"Warning: Could not import some modules: {e}")
     MODULES_AVAILABLE = False
 
+
 def load_programs(filepath):
     """Load programs from JSON file"""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         print(f"Error: File {filepath} not found")
@@ -38,10 +40,11 @@ def load_programs(filepath):
         print(f"Error: Invalid JSON in {filepath}: {e}")
         return []
 
+
 def save_programs(programs, filepath):
     """Save programs to JSON file"""
     try:
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(programs, f, indent=2, ensure_ascii=False)
         print(f"Saved {len(programs)} programs to {filepath}")
         return True
@@ -49,12 +52,15 @@ def save_programs(programs, filepath):
         print(f"Error saving to {filepath}: {e}")
         return False
 
-def run_data_quality_workflow(input_file="data/active/programs.json",
-                             output_file="data/active/programs_enriched.json",
-                             enable_enrichment=True,
-                             enable_deduplication=True,
-                             enable_history=True,
-                             enable_validation=True):
+
+def run_data_quality_workflow(
+    input_file="data/active/programs.json",
+    output_file="data/active/programs_enriched.json",
+    enable_enrichment=True,
+    enable_deduplication=True,
+    enable_history=True,
+    enable_validation=True,
+):
     """
     Run a complete data quality workflow
     """
@@ -81,9 +87,16 @@ def run_data_quality_workflow(input_file="data/active/programs.json",
             # Show example of enriched fields
             if programs:
                 sample = programs[0]
-                enriched_fields = [k for k in sample.keys() if not k.startswith('_') and k not in load_programs(input_file)[0].keys() if load_programs(input_file)]
+                enriched_fields = [
+                    k
+                    for k in sample.keys()
+                    if not k.startswith("_") and k not in load_programs(input_file)[0].keys()
+                    if load_programs(input_file)
+                ]
                 if enriched_fields:
-                    print(f"   Example enriched fields: {', '.join(enriched_fields[:5])}{'...' if len(enriched_fields) > 5 else ''}")
+                    print(
+                        f"   Example enriched fields: {', '.join(enriched_fields[:5])}{'...' if len(enriched_fields) > 5 else ''}"
+                    )
         except Exception as e:
             print(f"   Error during enrichment: {e}")
             if not MODULES_AVAILABLE:
@@ -95,7 +108,9 @@ def run_data_quality_workflow(input_file="data/active/programs.json",
     if enable_deduplication and MODULES_AVAILABLE:
         print("\n3. Checking for and removing duplicates...")
         try:
-            deduped_programs, duplicates_info = deduplicate_programs(programs, similarity_threshold=0.85)
+            deduped_programs, duplicates_info = deduplicate_programs(
+                programs, similarity_threshold=0.85
+            )
             removed_count = len(programs) - len(deduped_programs)
             if removed_count > 0:
                 print(f"   Found and removed {removed_count} duplicate programs")
@@ -103,7 +118,7 @@ def run_data_quality_workflow(input_file="data/active/programs.json",
 
                 # Save duplicate info for review
                 dup_file = "data/active/duplicates_found.json"
-                with open(dup_file, 'w', encoding='utf-8') as f:
+                with open(dup_file, "w", encoding="utf-8") as f:
                     json.dump(duplicates_info, f, indent=2, ensure_ascii=False)
                 print(f"   Duplicate details saved to {dup_file}")
             else:
@@ -140,25 +155,29 @@ def run_data_quality_workflow(input_file="data/active/programs.json",
             print(f"   Status: {validation_results['status'].upper()}")
             print(f"   Programs Analyzed: {validation_results['total_programs']}")
 
-            if validation_results['individual_scores']:
-                avg_completeness = sum(r.get('completeness_score', 0) for r in validation_results['individual_scores']) / len(validation_results['individual_scores'])
+            if validation_results["individual_scores"]:
+                avg_completeness = sum(
+                    r.get("completeness_score", 0) for r in validation_results["individual_scores"]
+                ) / len(validation_results["individual_scores"])
                 print(f"   Average Completeness: {avg_completeness:.1f}%")
 
             # Show top issues
-            if validation_results['batch_issues']:
+            if validation_results["batch_issues"]:
                 print("\n   Top Issues Found:")
                 issue_counts = {}
-                for issue in validation_results['batch_issues']:
-                    issue_type = issue.get('type', 'unknown')
+                for issue in validation_results["batch_issues"]:
+                    issue_type = issue.get("type", "unknown")
                     issue_counts[issue_type] = issue_counts.get(issue_type, 0) + 1
 
-                for issue_type, count in sorted(issue_counts.items(), key=lambda x: x[1], reverse=True)[:5]:
+                for issue_type, count in sorted(
+                    issue_counts.items(), key=lambda x: x[1], reverse=True
+                )[:5]:
                     print(f"     - {issue_type}: {count}")
 
             # Show recommendations
-            if validation_results['recommendations']:
+            if validation_results["recommendations"]:
                 print("\n   Recommendations:")
-                for i, rec in enumerate(validation_results['recommendations'][:3], 1):
+                for i, rec in enumerate(validation_results["recommendations"][:3], 1):
                     print(f"     {i}. {rec}")
 
         except Exception as e:
@@ -182,25 +201,26 @@ def run_data_quality_workflow(input_file="data/active/programs.json",
 
     return True
 
+
 def main():
     """Main function to run the workflow"""
     import argparse
 
-    parser = argparse.ArgumentParser(description='Run data quality workflow on student programs')
-    parser.add_argument('--input', '-i', default='data/active/programs.json',
-                        help='Input JSON file with programs')
-    parser.add_argument('--output', '-o', default='data/active/programs_processed.json',
-                        help='Output JSON file for processed programs')
-    parser.add_argument('--skip-enrichment', action='store_true',
-                        help='Skip data enrichment step')
-    parser.add_argument('--skip-deduplication', action='store_true',
-                        help='Skip deduplication step')
-    parser.add_argument('--skip-history', action='store_true',
-                        help='Skip historical tracking step')
-    parser.add_argument('--skip-validation', action='store_true',
-                        help='Skip validation step')
-    parser.add_argument('--show-sample', action='store_true',
-                        help='Show sample of processed data')
+    parser = argparse.ArgumentParser(description="Run data quality workflow on student programs")
+    parser.add_argument(
+        "--input", "-i", default="data/active/programs.json", help="Input JSON file with programs"
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        default="data/active/programs_processed.json",
+        help="Output JSON file for processed programs",
+    )
+    parser.add_argument("--skip-enrichment", action="store_true", help="Skip data enrichment step")
+    parser.add_argument("--skip-deduplication", action="store_true", help="Skip deduplication step")
+    parser.add_argument("--skip-history", action="store_true", help="Skip historical tracking step")
+    parser.add_argument("--skip-validation", action="store_true", help="Skip validation step")
+    parser.add_argument("--show-sample", action="store_true", help="Show sample of processed data")
 
     args = parser.parse_args()
 
@@ -210,7 +230,7 @@ def main():
         enable_enrichment=not args.skip_enrichment,
         enable_deduplication=not args.skip_deduplication,
         enable_history=not args.skip_history,
-        enable_validation=not args.skip_validation
+        enable_validation=not args.skip_validation,
     )
 
     if success and args.show_sample:
@@ -218,17 +238,22 @@ def main():
         programs = load_programs(args.output)
         if programs:
             for i, program in enumerate(programs[:2]):
-                print(f"\nProgram {i+1}:")
+                print(f"\nProgram {i + 1}:")
                 print(f"  ID: {program.get('id', 'N/A')}")
                 print(f"  Name: {program.get('name', 'N/A')}")
                 print(f"  Company: {program.get('company', 'N/A')}")
                 # Show some enriched fields if available
-                enriched_fields = ['program_duration_days', 'application_complexity_score', 'is_remote']
+                enriched_fields = [
+                    "program_duration_days",
+                    "application_complexity_score",
+                    "is_remote",
+                ]
                 for field in enriched_fields:
                     if field in program:
                         print(f"  {field}: {program[field]}")
 
     return 0 if success else 1
+
 
 if __name__ == "__main__":
     exit(main())

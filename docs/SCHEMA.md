@@ -15,7 +15,7 @@ The canonical JSON Schema is located at: `data/schema.json`
 ### Required Fields
 These fields must be present in every program record:
 
-- **id**: Unique identifier (UUID v5 based on company+name)
+- **id**: Unique identifier (UUID v5 derived from normalized `company|name`; see `scripts/program_ids.py`)
 - **name**: Program name
 - **company**: Company or organization offering the program
 - **apply_url**: Direct URL to apply for the program

@@ -8,54 +8,50 @@ import json
 import logging
 import os
 import sys
-from typing import Dict, List
 
 # Add the scripts directory to the path so we can import from it
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'scripts'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
 from generate_dashboard import get_project_root
 from scraper_framework import scraper_registry
 from validate_data import load_schema, validate_programs
 
-PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
-LOG_DIR = os.path.join(PROJECT_ROOT, 'logs')
+PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
+LOG_DIR = os.path.join(PROJECT_ROOT, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(os.path.join(LOG_DIR, 'scraper.log')),
-        logging.StreamHandler()
-    ]
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler(os.path.join(LOG_DIR, "scraper.log")), logging.StreamHandler()],
 )
 
 logger = logging.getLogger(__name__)
 
 
-def load_allowlist() -> List[Dict]:
+def load_allowlist() -> list[dict]:
     """
     Load company allowlist from config file
     """
-    config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'allowlist.json')
+    config_path = os.path.join(os.path.dirname(__file__), "..", "config", "allowlist.json")
     config_path = os.path.normpath(config_path)
 
     try:
-        with open(config_path, 'r', encoding='utf-8') as f:
+        with open(config_path, encoding="utf-8") as f:
             data = json.load(f)
-            return data.get('companies', [])
+            return data.get("companies", [])
     except Exception as e:
         logger.error(f"Failed to load allowlist: {e}")
         return []
 
 
-def scrape_company_programs(company_config: Dict) -> List[Dict]:
+def scrape_company_programs(company_config: dict) -> list[dict]:
     """
     Scrape programs for a single company
     """
-    company_name = company_config['name']
-    base_url = company_config.get('base_url', '')
+    company_name = company_config["name"]
+    base_url = company_config.get("base_url", "")
 
     # If no base_url is provided, try to construct a reasonable one
     if not base_url:
@@ -79,7 +75,7 @@ def scrape_company_programs(company_config: Dict) -> List[Dict]:
         return []
 
 
-def load_existing_programs(filepath: str) -> List[Dict]:
+def load_existing_programs(filepath: str) -> list[dict]:
     """
     Load existing programs from JSON file
     """
@@ -87,14 +83,14 @@ def load_existing_programs(filepath: str) -> List[Dict]:
         return []
 
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         logger.error(f"Error loading existing programs from {filepath}: {e}")
         return []
 
 
-def save_programs(filepath: str, programs: List[Dict]):
+def save_programs(filepath: str, programs: list[dict]):
     """
     Save programs to JSON file
     """
@@ -102,14 +98,14 @@ def save_programs(filepath: str, programs: List[Dict]):
         # Ensure directory exists
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(programs, f, indent=2, ensure_ascii=False)
         logger.info(f"Saved {len(programs)} programs to {filepath}")
     except Exception as e:
         logger.error(f"Error saving programs to {filepath}: {e}")
 
 
-def merge_programs(existing: List[Dict], new: List[Dict]) -> List[Dict]:
+def merge_programs(existing: list[dict], new: list[dict]) -> list[dict]:
     """
     Merge new programs with existing ones, avoiding duplicates by ID
     """
@@ -117,7 +113,7 @@ def merge_programs(existing: List[Dict], new: List[Dict]) -> List[Dict]:
     merged = []
     id_to_index = {}
     for program in existing:
-        prog_id = program.get('id')
+        prog_id = program.get("id")
         if prog_id and prog_id in id_to_index:
             merged[id_to_index[prog_id]] = program
         else:
@@ -127,7 +123,7 @@ def merge_programs(existing: List[Dict], new: List[Dict]) -> List[Dict]:
 
     # Add or update with new programs
     for new_prog in new:
-        prog_id = new_prog.get('id')
+        prog_id = new_prog.get("id")
         if prog_id:
             if prog_id in id_to_index:
                 # Update existing program
@@ -147,12 +143,12 @@ def merge_programs(existing: List[Dict], new: List[Dict]) -> List[Dict]:
     return merged
 
 
-def separate_active_archived(programs: List[Dict]) -> tuple[List[Dict], List[Dict]]:
+def separate_active_archived(programs: list[dict]) -> tuple[list[dict], list[dict]]:
     """
     Separate programs into active and archived based on status
     """
-    active = [p for p in programs if p.get('status') != 'Closed']
-    archived = [p for p in programs if p.get('status') == 'Closed']
+    active = [p for p in programs if p.get("status") != "Closed"]
+    archived = [p for p in programs if p.get("status") == "Closed"]
     return active, archived
 
 
@@ -181,7 +177,7 @@ def main():
     # Scrape all companies
     all_new_programs = []
     for company_config in companies:
-        company_name = company_config['name']
+        company_name = company_config["name"]
         logger.info(f"Processing {company_name}")
 
         programs = scrape_company_programs(company_config)
@@ -193,14 +189,16 @@ def main():
     project_root = get_project_root()
 
     # Load existing programs
-    active_path = os.path.join(project_root, 'data', 'active', 'programs.json')
-    archived_path = os.path.join(project_root, 'data', 'archived', 'programs.json')
+    active_path = os.path.join(project_root, "data", "active", "programs.json")
+    archived_path = os.path.join(project_root, "data", "archived", "programs.json")
 
     existing_active = load_existing_programs(active_path)
     existing_archived = load_existing_programs(archived_path)
     existing_all = existing_active + existing_archived
 
-    logger.info(f"Loaded {len(existing_active)} existing active programs and {len(existing_archived)} existing archived programs")
+    logger.info(
+        f"Loaded {len(existing_active)} existing active programs and {len(existing_archived)} existing archived programs"
+    )
 
     # Merge new programs with existing ones
     all_merged_programs = merge_programs(existing_all, all_new_programs)
@@ -208,7 +206,9 @@ def main():
     # Separate into active and archived
     new_active, new_archived = separate_active_archived(all_merged_programs)
 
-    logger.info(f"After merging: {len(new_active)} active programs, {len(new_archived)} archived programs")
+    logger.info(
+        f"After merging: {len(new_active)} active programs, {len(new_archived)} archived programs"
+    )
 
     # Validate the merged data
     logger.info("Validating merged active programs...")

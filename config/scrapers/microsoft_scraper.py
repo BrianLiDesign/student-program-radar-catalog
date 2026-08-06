@@ -8,6 +8,7 @@ from scraper_framework import EnhancedBaseScraper
 
 logger = logging.getLogger(__name__)
 
+
 class MicrosoftScraper(EnhancedBaseScraper):
     """Microsoft-specific scraper"""
 
@@ -21,10 +22,10 @@ class MicrosoftScraper(EnhancedBaseScraper):
         # Based on Microsoft's actual student programs
         urls = [
             f"{self.base_url}/en-us/training/studentambassadors/",  # Learn Student Ambassador
-            f"{self.base_url}/en-us/students/imagine-cup",          # Imagine Cup
-            f"{self.base_url}/en-us/students/garage",               # Microsoft Garage
-            f"{self.base_url}/en-us/students/leap",                 # LEAP Apprenticeship
-            f"{self.base_url}/en-us/students/university-recruiting" # University Recruiting
+            f"{self.base_url}/en-us/students/imagine-cup",  # Imagine Cup
+            f"{self.base_url}/en-us/students/garage",  # Microsoft Garage
+            f"{self.base_url}/en-us/students/leap",  # LEAP Apprenticeship
+            f"{self.base_url}/en-us/students/university-recruiting",  # University Recruiting
         ]
         return urls
 
@@ -39,7 +40,6 @@ class MicrosoftScraper(EnhancedBaseScraper):
         # Return realistic sample data based on the URL
         if "studentambassadors" in url:
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
                 "name": "Microsoft Learn Student Ambassador",
                 "company": "Microsoft",
                 "apply_url": "https://learn.microsoft.com/en-us/training/studentambassadors/",
@@ -55,23 +55,22 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "Host workshops and events on Microsoft technologies",
                     "Mentor peers in technical skills",
                     "Share learning materials and resources",
-                    "Provide feedback on Microsoft learning products"
+                    "Provide feedback on Microsoft learning products",
                 ],
                 "time_commitment": "5-15 hours/week",
                 "perks_detail": "Access to Microsoft Learn resources, cloud credits, software licenses, global community, mentorship opportunities",
                 "deadlines": {
                     "application_round_1": "2024-03-15",
-                    "application_round_2": "2024-09-15"
+                    "application_round_2": "2024-09-15",
                 },
                 "social_requirements": "Active participation in community forums and events",
                 "source_url": "https://learn.microsoft.com/en-us/training/studentambassadors/",
                 "source_snippet": "Microsoft Learn Student Ambassadors are students who amplify their impact by sharing their passion for technology with their peers.",
                 "school_restricted": False,
-                "notes": "Program accepts applications twice yearly"
+                "notes": "Program accepts applications twice yearly",
             }
         elif "imagine-cup" in url:
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0852",
                 "name": "Microsoft Imagine Cup",
                 "company": "Microsoft",
                 "apply_url": "https://www.microsoft.com/en-us/imaginecup/",
@@ -87,24 +86,23 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "Develop innovative technology project addressing a global issue",
                     "Create project proposal, prototype, and pitch presentation",
                     "Participate in online mentorship and skill-building sessions",
-                    "Present project at regional and potentially world final events"
+                    "Present project at regional and potentially world final events",
                 ],
                 "time_commitment": "Flexible - project-based over 4-6 months",
                 "perks_detail": "Travel to world championship, mentorship from Microsoft experts, Azure credits, cash prizes up to $100,000",
                 "deadlines": {
                     "registration": "2024-01-15",
                     "regional_submission": "2024-03-31",
-                    "world_finals": "2024-05-15"
+                    "world_finals": "2024-05-15",
                 },
                 "social_requirements": "Document progress and share updates using #ImagineCup",
                 "source_url": "https://www.microsoft.com/en-us/imaginecup/",
                 "source_snippet": "The Imagine Cup is a global competition that empowers the next generation of computer science students to team up and use their creativity, passion and knowledge of technology to create applications that shape how we live, work and play.",
                 "school_restricted": False,
-                "notes": "Annual competition cycle: registration Jan-Mar, submissions Apr-May, finals May-Jun"
+                "notes": "Annual competition cycle: registration Jan-Mar, submissions Apr-May, finals May-Jun",
             }
         elif "/garage" in url:
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0853",
                 "name": "Microsoft Garage Internship",
                 "company": "Microsoft",
                 "apply_url": "https://www.microsoft.com/en-us/garage/students/",
@@ -120,7 +118,7 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "Work on experimental projects in areas like AI, AR/VR, or sustainability",
                     "Collaborate with cross-functional teams of researchers and engineers",
                     "Participate in hackathons and innovation workshops",
-                    "Document and present project outcomes to Microsoft leadership"
+                    "Document and present project outcomes to Microsoft leadership",
                 ],
                 "time_commitment": "40 hours/week (summer) or 20 hours/week (academic year)",
                 "perks_detail": "Competitive salary, housing assistance, professional development budget, potential full-time offer",
@@ -128,17 +126,16 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "summer_application": "2024-01-15",
                     "fall_application": "2024-07-15",
                     "program_start": "2024-06-01",
-                    "program_end": "2024-08-30"
+                    "program_end": "2024-08-30",
                 },
                 "social_requirements": "Share project highlights on LinkedIn using #MicrosoftGarage",
                 "source_url": "https://www.microsoft.com/en-us/garage/students/",
                 "source_snippet": "The Microsoft Garage is Microsoft's outlet for experimental projects. It's where employees, interns, and students work on passion projects that may someday become real Microsoft products and services.",
                 "school_restricted": False,
-                "notes": "Available as summer internships (12 weeks) or part-time during academic year"
+                "notes": "Available as summer internships (12 weeks) or part-time during academic year",
             }
         elif "/leap" in url:
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0854",
                 "name": "Microsoft LEAP Apprenticeship Program",
                 "company": "Microsoft",
                 "apply_url": "https://www.microsoft.com/en-us/leap",
@@ -154,24 +151,23 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "Complete intensive technical training in full-stack development",
                     "Work on real Microsoft production projects with mentor guidance",
                     "Participate in professional development and leadership training",
-                    "Transition to full-time roles based on performance"
+                    "Transition to full-time roles based on performance",
                 ],
                 "time_commitment": "40 hours/week",
                 "perks_detail": "Competitive salary, benefits package, technical mentorship, potential full-time offer",
                 "deadlines": {
                     "application": "2024-03-01",
                     "program_start": "2024-06-03",
-                    "program_end": "2024-09-20"
+                    "program_end": "2024-09-20",
                 },
                 "social_requirements": "Share learning journey using #MSLEAP",
                 "source_url": "https://www.microsoft.com/en-us/leap",
                 "source_snippet": "The LEAP (Leading Engineers to Advancement Program) is a 16-week immersive software engineering apprenticeship designed to develop and launch passionate, diverse talent into technical careers.",
                 "school_restricted": False,
-                "notes": "Program runs twice yearly: Spring (Mar-Aug) and Fall (Sep-Feb)"
+                "notes": "Program runs twice yearly: Spring (Mar-Aug) and Fall (Sep-Feb)",
             }
         elif "university-recruiting" in url:
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0855",
                 "name": "Microsoft University Recruiting Programs",
                 "company": "Microsoft",
                 "apply_url": "https://www.microsoft.com/en-us/university",
@@ -187,7 +183,7 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "Work on real projects in software engineering, data science, product management, etc.",
                     "Participate in team meetings, code reviews, and agile development",
                     "Receive mentorship from experienced Microsoft employees",
-                    "Present work and receive feedback throughout the internship term"
+                    "Present work and receive feedback throughout the internship term",
                 ],
                 "time_commitment": "40 hours/week (internships), varies for co-ops and part-time roles",
                 "perks_detail": "Competitive salary, relocation assistance, housing stipend, professional development opportunities",
@@ -195,18 +191,17 @@ class MicrosoftScraper(EnhancedBaseScraper):
                     "internship_winter": "2024-09-15",
                     "internship_spring": "2024-01-15",
                     "internship_summer": "2024-03-15",
-                    "co-op_applications": "2024-06-01"
+                    "co-op_applications": "2024-06-01",
                 },
                 "social_requirements": "Share internship experience using #LifeAtMicrosoft",
                 "source_url": "https://www.microsoft.com/en-us/university",
                 "source_snippet": "Microsoft offers a variety of programs to help university students gain real-world experience and explore career paths in technology.",
                 "school_restricted": False,
-                "notes": "Multiple programs with different timelines: internships (summer/winter/spring), co-ops (alternating school/work), and year-round opportunities"
+                "notes": "Multiple programs with different timelines: internships (summer/winter/spring), co-ops (alternating school/work), and year-round opportunities",
             }
         else:
             # Fallback for any other URLs
             return {
-                "id": "d290f1ee-6c54-4b01-90e6-d701748f0850",
                 "name": "Microsoft Student Program",
                 "company": "Microsoft",
                 "apply_url": url,
@@ -221,12 +216,12 @@ class MicrosoftScraper(EnhancedBaseScraper):
                 "responsibilities": [
                     "Participate in program activities and events",
                     "Engage with Microsoft technologies and community",
-                    "Contribute to program goals and objectives"
+                    "Contribute to program goals and objectives",
                 ],
                 "time_commitment": "Variable",
                 "perks_detail": "Access to Microsoft resources and community",
                 "source_url": url,
                 "source_snippet": "Microsoft student program.",
                 "school_restricted": False,
-                "notes": "Program specifics vary by offering"
+                "notes": "Program specifics vary by offering",
             }

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "student-program-radar-catalog"
+version = "1.0.0"
+description = "Canonical public catalog of student-facing programs with automated scraping"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Brian Li" }]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=3.5.0",
+    "pytest>=7.0.0",
+    "ruff>=0.8.0",
+]
+
+[tool.pytest.ini_options]
+python_files = ["test_workflow.py", "test_scrape_programs.py", "test_dashboard.py"]
+testpaths = ["."]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["scripts", "config"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+]
+ignore = [
+    "E501",  # line length handled pragmatically
+]
+
+[tool.ruff.lint.per-file-ignores]
+"config/scrapers/*" = ["E402"]  # sys.path setup before imports
+"test_workflow.py" = ["E402"]
+"test_scrape_programs.py" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"

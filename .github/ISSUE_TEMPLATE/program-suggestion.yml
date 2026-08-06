@@ -1,0 +1,46 @@
+name: Program suggestion
+description: Suggest a new student program for the catalog
+title: "[Program] "
+labels:
+  - program-suggestion
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest a student-facing program (ambassador, campus rep, fellowship, etc.)
+        that should be included in the catalog. Maintainers verify suggestions before
+        adding them via the automation pipeline.
+  - type: input
+    id: program-name
+    attributes:
+      label: Program name
+      placeholder: Adobe Student Ambassador
+    validations:
+      required: true
+  - type: input
+    id: company
+    attributes:
+      label: Company or organization
+      placeholder: Adobe
+    validations:
+      required: true
+  - type: input
+    id: apply-url
+    attributes:
+      label: Application URL
+      placeholder: https://example.com/apply
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Known details
+      description: Role type, domain, compensation, eligibility, deadlines, etc.
+      placeholder: Paid ambassador program for full-time U.S. college students...
+  - type: input
+    id: source
+    attributes:
+      label: Where did you find this program?
+      placeholder: Company careers page, LinkedIn, campus flyer, etc.
+    validations:
+      required: true

@@ -1,0 +1,46 @@
+name: Program correction
+description: Report incorrect or outdated information in an existing listing
+title: "[Correction] "
+labels:
+  - program-correction
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report errors in an existing catalog entry. Include evidence so maintainers
+        can verify the correction.
+  - type: input
+    id: program-id
+    attributes:
+      label: Program ID (if known)
+      placeholder: 19a10f31-b04b-5135-b79f-555cff1c3bad
+  - type: input
+    id: program-name
+    attributes:
+      label: Program name
+    validations:
+      required: true
+  - type: input
+    id: company
+    attributes:
+      label: Company
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What is wrong?
+      description: Broken link, wrong status, outdated deadline, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Screenshot, link, or quote supporting the correction.
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-fix
+    attributes:
+      label: Suggested fix (optional)
