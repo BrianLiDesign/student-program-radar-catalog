@@ -11,8 +11,8 @@ import sys
 from collections import defaultdict
 from difflib import SequenceMatcher
 
-# Add the scripts directory to the path
-script_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts")
+# Add the directory containing this module to the path.
+script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
 
 

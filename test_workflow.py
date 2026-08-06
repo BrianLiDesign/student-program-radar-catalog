@@ -1,3 +1,4 @@
+import asyncio
 import json
 import sys
 import tempfile
@@ -5,6 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import aiohttp
 from bs4 import BeautifulSoup
 from requests.exceptions import RequestException
 
@@ -22,6 +24,7 @@ from generate_dashboard import (
 )
 from program_ids import generate_program_id
 from scraper_framework import EnhancedBaseScraper, EnhancedScraperRegistry
+from scraper_framework_async import AsyncBaseScraper
 from track_history import ProgramHistoryTracker
 from validate_data import load_schema, validate_programs
 
@@ -35,6 +38,47 @@ class DummyScraper(EnhancedBaseScraper):
             "name": "Example Program",
             "apply_url": url,
         }
+
+
+class DummyAsyncScraper(AsyncBaseScraper):
+    def find_program_urls(self):
+        return [f"{self.base_url}/program"]
+
+    def parse_program_page(self, url):
+        return {"name": "Example Program", "apply_url": url}
+
+
+class FakeAsyncResponse:
+    def __init__(self, status, content=b"<html><h1>Program</h1></html>"):
+        self.status = status
+        self._content = content
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        return False
+
+    def raise_for_status(self):
+        if self.status >= 400:
+            raise aiohttp.ClientResponseError(
+                request_info=MagicMock(real_url="https://example.com/program"),
+                history=(),
+                status=self.status,
+            )
+
+    async def read(self):
+        return self._content
+
+
+class FakeAsyncSession:
+    def __init__(self, statuses):
+        self.statuses = iter(statuses)
+        self.calls = 0
+
+    def get(self, url, timeout):
+        self.calls += 1
+        return FakeAsyncResponse(next(self.statuses))
 
 
 class ProgramIdTests(unittest.TestCase):
@@ -99,6 +143,41 @@ class ScraperFrameworkTests(unittest.TestCase):
         self.assertEqual(programs[0]["company"], "Example")
         self.assertEqual(programs[0]["source_url"], "https://example.com/program")
         self.assertEqual(programs[0]["id"], generate_program_id("Example", "Example Program"))
+
+
+class AsyncScraperFrameworkTests(unittest.TestCase):
+    def setUp(self):
+        self.scraper = DummyAsyncScraper(
+            "Example",
+            "https://example.com",
+            enable_cache=False,
+            rate_limit_delay=0,
+            max_concurrent_requests=1,
+            retry_base_delay=0,
+        )
+
+    def test_non_retryable_404_is_not_retried(self):
+        self.scraper.session = FakeAsyncSession([404])
+
+        page = asyncio.run(self.scraper._fetch_page("https://example.com/program"))
+
+        self.assertIsNone(page)
+        self.assertEqual(self.scraper.session.calls, 1)
+        self.assertEqual(self.scraper.stats["errors"], 1)
+
+    def test_retry_sleep_releases_concurrency_slot(self):
+        self.scraper.session = FakeAsyncSession([500, 200])
+        semaphore_states = []
+
+        async def record_sleep(_delay):
+            semaphore_states.append(not self.scraper._semaphore.locked())
+
+        with patch("scraper_framework_async.asyncio.sleep", side_effect=record_sleep):
+            page = asyncio.run(self.scraper._fetch_page("https://example.com/program"))
+
+        self.assertEqual(page.h1.get_text(), "Program")
+        self.assertEqual(self.scraper.session.calls, 2)
+        self.assertEqual(semaphore_states, [True])
 
 
 class ScraperRegistryTests(unittest.TestCase):

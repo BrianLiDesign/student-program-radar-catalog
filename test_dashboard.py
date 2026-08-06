@@ -3,8 +3,10 @@ Unit tests for the dashboard generator.
 """
 
 from datetime import datetime, timedelta
+from unittest.mock import patch
 
 from scripts.generate_dashboard import (
+    _asset_exists,
     format_status_indicator,
     generate_automation_health_strip,
     generate_compact_stats,
@@ -36,6 +38,18 @@ def test_get_apply_markdown():
     # Missing asset falls back to text link
     missing = get_apply_markdown(url, "assets/does-not-exist.svg")
     assert missing == f"[Apply]({url})"
+
+
+def test_apply_asset_lookup_is_cached():
+    """Avoid repeating the same filesystem lookup for every program row."""
+    assets_path = "assets/cache-test.svg"
+    _asset_exists.cache_clear()
+
+    with patch("scripts.generate_dashboard.os.path.exists", return_value=True) as exists:
+        get_apply_markdown("https://example.com/one", assets_path)
+        get_apply_markdown("https://example.com/two", assets_path)
+
+    exists.assert_called_once()
 
 
 def test_generate_role_type_jump_links():

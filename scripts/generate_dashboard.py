@@ -8,6 +8,7 @@ import json
 import os
 from collections import Counter
 from datetime import datetime
+from functools import cache
 
 
 def get_project_root() -> str:
@@ -57,11 +58,17 @@ def format_status_indicator(status: str) -> str:
     return status_map.get(status, "\u26aa")
 
 
-def get_apply_markdown(apply_url: str, assets_path: str = "assets/apply.svg") -> str:
-    """Generate markdown for Apply cell: badge image linked to URL, or text link if badge missing"""
+@cache
+def _asset_exists(assets_path: str) -> bool:
+    """Return whether a repository-relative dashboard asset exists."""
     project_root = get_project_root()
     asset_fs_path = os.path.join(project_root, assets_path.replace("/", os.sep))
-    if os.path.exists(asset_fs_path):
+    return os.path.exists(asset_fs_path)
+
+
+def get_apply_markdown(apply_url: str, assets_path: str = "assets/apply.svg") -> str:
+    """Generate markdown for Apply cell: badge image linked to URL, or text link if badge missing"""
+    if _asset_exists(assets_path):
         return f"[![Apply]({assets_path})]({apply_url})"
     return f"[Apply]({apply_url})"
 

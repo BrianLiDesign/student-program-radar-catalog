@@ -231,9 +231,10 @@ class AsyncBaseScraper(ABC):
 
         for attempt in range(self.max_retries + 1):
             await self.rate_limiter.wait_if_needed(url)
+            retry_delay = None
 
-            async with self._semaphore:
-                try:
+            try:
+                async with self._semaphore:
                     self.logger.info(
                         f"Fetching {url}" + (f" (attempt {attempt + 1})" if attempt else "")
                     )
@@ -241,40 +242,58 @@ class AsyncBaseScraper(ABC):
                     async with self.session.get(url, timeout=timeout) as response:
                         if response.status == 429 or 500 <= response.status < 600:
                             if attempt < self.max_retries:
-                                delay = min(
+                                retry_delay = min(
                                     self.retry_base_delay * (2**attempt),
                                     self.retry_max_delay,
                                 )
-                                self.logger.warning(
-                                    f"HTTP {response.status} for {url}, retrying in {delay:.1f}s"
-                                )
-                                await asyncio.sleep(delay)
-                                continue
-                        response.raise_for_status()
-                        content = await response.read()
+                            else:
+                                response.raise_for_status()
+                        else:
+                            response.raise_for_status()
 
-                        if self.cache_manager:
-                            await self.cache_manager.set(url, content)
+                        if retry_delay is None:
+                            content = await response.read()
 
-                        self.stats["requests_made"] += 1
-                        return BeautifulSoup(content, "html.parser")
+                            if self.cache_manager:
+                                await self.cache_manager.set(url, content)
 
-                except aiohttp.ClientError as e:
-                    if attempt < self.max_retries:
-                        delay = min(
-                            self.retry_base_delay * (2**attempt),
-                            self.retry_max_delay,
-                        )
-                        self.logger.warning(f"Request error for {url}, retrying in {delay:.1f}s")
-                        await asyncio.sleep(delay)
-                        continue
+                            self.stats["requests_made"] += 1
+                            return BeautifulSoup(content, "html.parser")
+
+            except (aiohttp.ClientConnectionError, asyncio.TimeoutError) as e:
+                if attempt < self.max_retries:
+                    retry_delay = min(
+                        self.retry_base_delay * (2**attempt),
+                        self.retry_max_delay,
+                    )
+                else:
                     self.logger.error(f"Failed to fetch {url}: {str(e)}")
                     self.stats["errors"] += 1
                     return None
-                except Exception as e:
-                    self.logger.error(f"Unexpected error fetching {url}: {str(e)}")
+            except aiohttp.ClientResponseError as e:
+                if attempt < self.max_retries and (e.status == 429 or 500 <= e.status < 600):
+                    retry_delay = min(
+                        self.retry_base_delay * (2**attempt),
+                        self.retry_max_delay,
+                    )
+                else:
+                    self.logger.error(f"Failed to fetch {url}: {str(e)}")
                     self.stats["errors"] += 1
                     return None
+            except aiohttp.ClientError as e:
+                self.logger.error(f"Failed to fetch {url}: {str(e)}")
+                self.stats["errors"] += 1
+                return None
+            except Exception as e:
+                self.logger.error(f"Unexpected error fetching {url}: {str(e)}")
+                self.stats["errors"] += 1
+                return None
+
+            if retry_delay is not None:
+                self.logger.warning(f"Transient error for {url}, retrying in {retry_delay:.1f}s")
+                # Sleep after leaving the semaphore so other requests can make progress.
+                await asyncio.sleep(retry_delay)
+                continue
 
         return None
 
