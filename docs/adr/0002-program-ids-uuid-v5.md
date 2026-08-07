@@ -24,3 +24,4 @@ deterministic identifiers across scraper runs.
 - Same program always gets the same ID after refresh.
 - ID changes require an explicit migration (out of scope for routine scraper updates).
 - Tests assert UUID format, not slug format.
+- **2026-08-07:** Legacy placeholder UUIDs migrated to canonical UUID v5 via `scripts/migrate_program_ids.py`. Mapping published at [docs/migrations/2026-08-07-program-id-uuid-v5.md](../migrations/2026-08-07-program-id-uuid-v5.md).

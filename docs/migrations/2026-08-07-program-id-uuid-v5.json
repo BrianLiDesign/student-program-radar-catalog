@@ -1,0 +1,92 @@
+{
+  "migration": "program-id-uuid-v5",
+  "migrated_on": "2026-08-07",
+  "namespace": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "key_format": "company|name (lowercase, trimmed)",
+  "entries": [
+    {
+      "old_id": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+      "new_id": "b354e3ff-6134-5f1f-8e81-8a72f912bffb",
+      "company": "Microsoft",
+      "name": "Microsoft Learn Student Ambassador",
+      "key": "microsoft|microsoft learn student ambassador"
+    },
+    {
+      "old_id": "d290f1ee-6c54-4b01-90e6-d701748f0852",
+      "new_id": "5eef1a7f-e69f-5d32-a81f-fe44c6a228e0",
+      "company": "Microsoft",
+      "name": "Microsoft Imagine Cup",
+      "key": "microsoft|microsoft imagine cup"
+    },
+    {
+      "old_id": "d290f1ee-6c54-4b01-90e6-d701748f0854",
+      "new_id": "4d972b1c-cac2-5e37-badb-b908611a5168",
+      "company": "Microsoft",
+      "name": "Microsoft LEAP Apprenticeship Program",
+      "key": "microsoft|microsoft leap apprenticeship program"
+    },
+    {
+      "old_id": "550e8400-e29b-41d4-a716-446655440000",
+      "new_id": "19a10f31-b04b-5135-b79f-555cff1c3bad",
+      "company": "Adobe",
+      "name": "Adobe Student Ambassador",
+      "key": "adobe|adobe student ambassador"
+    },
+    {
+      "old_id": "550e8400-e29b-41d4-a716-446655440001",
+      "new_id": "84850930-40ad-5591-a1b3-e1f83fe611b5",
+      "company": "Adobe",
+      "name": "Adobe Creative Cloud Fellowship",
+      "key": "adobe|adobe creative cloud fellowship"
+    },
+    {
+      "old_id": "550e8400-e29b-41d4-a716-446655440002",
+      "new_id": "7e072019-78ee-554a-a74b-496aaa552e4f",
+      "company": "Adobe",
+      "name": "Adobe Design Circle",
+      "key": "adobe|adobe design circle"
+    },
+    {
+      "old_id": "550e8400-e29b-41d4-a716-446655440003",
+      "new_id": "1c72a7c6-5575-57fb-8c69-a367f4f21d07",
+      "company": "Adobe",
+      "name": "Adobe University Outreach",
+      "key": "adobe|adobe university outreach"
+    },
+    {
+      "old_id": "550e8400-e29b-41d4-a716-446655440004",
+      "new_id": "07251db3-853b-52b6-864a-192923196f56",
+      "company": "Adobe",
+      "name": "Adobe Ideapalooza",
+      "key": "adobe|adobe ideapalooza"
+    },
+    {
+      "old_id": "3ba33b4a-3c1a-5555-8e1b-6b2a81b144c3",
+      "new_id": "b2c10956-f96b-5c5a-96ef-2db2843c0620",
+      "company": "Apple",
+      "name": "Apple Education",
+      "key": "apple|apple education"
+    },
+    {
+      "old_id": "3ba33b4a-3c1a-5555-8e1e-6c0082cea8c9",
+      "new_id": "c57f4602-90fc-5f7b-8c70-2f3b0351f6e2",
+      "company": "Netflix",
+      "name": "Netflix Campus Ambassador",
+      "key": "netflix|netflix campus ambassador"
+    },
+    {
+      "old_id": "d290f1ee-6c54-4b01-90e6-d701748f0855",
+      "new_id": "338e6816-b56f-5dc5-97b2-a724e667bbfa",
+      "company": "Microsoft",
+      "name": "Microsoft University Recruiting Programs",
+      "key": "microsoft|microsoft university recruiting programs"
+    },
+    {
+      "old_id": "d290f1ee-6c54-4b01-90e6-d701748f0853",
+      "new_id": "7fc94ab4-51a7-5733-bd1b-69821cfb5c12",
+      "company": "Microsoft",
+      "name": "Microsoft Garage Internship",
+      "key": "microsoft|microsoft garage internship"
+    }
+  ]
+}

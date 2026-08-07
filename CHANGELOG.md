@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - README badges, license section, and repository URL consistency
 - Program ID documentation aligned with UUID v5 generation contract
+- One-time migration of all catalog program IDs to canonical UUID v5 (`company|name`); see [docs/migrations/2026-08-07-program-id-uuid-v5.md](docs/migrations/2026-08-07-program-id-uuid-v5.md)
 
 ## [1.0.0] - 2026-08-05
 

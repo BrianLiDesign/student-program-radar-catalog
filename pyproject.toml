@@ -24,6 +24,7 @@ python_files = [
     "test_scrape_programs.py",
     "test_dashboard.py",
     "test_allowlist_audit.py",
+    "test_migrate_program_ids.py",
 ]
 testpaths = ["."]
 
@@ -49,6 +50,7 @@ ignore = [
 "test_workflow.py" = ["E402"]
 "test_scrape_programs.py" = ["E402"]
 "test_allowlist_audit.py" = ["E402"]
+"test_migrate_program_ids.py" = ["E402"]
 
 [tool.ruff.format]
 quote-style = "double"
