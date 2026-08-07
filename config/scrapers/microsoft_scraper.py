@@ -2,226 +2,103 @@
 Microsoft scraper for Student Program Radar Catalog
 """
 
+from __future__ import annotations
+
 import logging
+import os
+import sys
+
+_scripts_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "scripts"))
+if _scripts_dir not in sys.path:
+    sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
+from scraper_parse_utils import (
+    first_paragraph,
+    infer_status_from_text,
+    page_text,
+    snippet_from_text,
+    today_iso,
+)
 
 logger = logging.getLogger(__name__)
 
+MSA_URL = "https://mvp.microsoft.com/studentambassadors"
+IMAGINE_CUP_URL = "https://imaginecup.microsoft.com/en-us"
+LEAP_URL = "https://leap.microsoft.com/en-US/"
+
+PROGRAM_CONFIG = {
+    MSA_URL: {
+        "name": "Microsoft Learn Student Ambassador",
+        "role_type": "Student Expert/Leader",
+        "domain": "Tech",
+        "keywords": ("student ambassador", "microsoft student ambassadors"),
+    },
+    IMAGINE_CUP_URL: {
+        "name": "Microsoft Imagine Cup",
+        "role_type": "Creator/Influencer",
+        "domain": "Tech",
+        "keywords": ("imagine cup",),
+    },
+    LEAP_URL: {
+        "name": "Microsoft LEAP Apprenticeship Program",
+        "role_type": "Other",
+        "domain": "Tech",
+        "keywords": ("leap", "apprenticeship"),
+    },
+}
+
 
 class MicrosoftScraper(EnhancedBaseScraper):
-    """Microsoft-specific scraper"""
+    """Microsoft student programs scraper (hybrid: live fetch + parsed fields)."""
 
     def __init__(self, company_name: str, base_url: str):
         super().__init__(company_name, base_url, rate_limit_delay=1.5)
 
-    def find_program_urls(self) -> list:
-        """
-        Find URLs for Microsoft student programs
-        """
-        # Based on Microsoft's actual student programs
-        urls = [
-            f"{self.base_url}/en-us/training/studentambassadors/",  # Learn Student Ambassador
-            f"{self.base_url}/en-us/students/imagine-cup",  # Imagine Cup
-            f"{self.base_url}/en-us/students/garage",  # Microsoft Garage
-            f"{self.base_url}/en-us/students/leap",  # LEAP Apprenticeship
-            f"{self.base_url}/en-us/students/university-recruiting",  # University Recruiting
-        ]
-        return urls
+    def find_program_urls(self) -> list[str]:
+        return [MSA_URL, IMAGINE_CUP_URL, LEAP_URL]
 
-    def parse_program_page(self, url: str) -> dict:
-        """
-        Parse Microsoft program page
-        For this implementation, we return realistic sample data based on the URL
-        In a real implementation, we would parse the actual webpage
-        """
-        logger.info(f"MicrosoftScraper parsing program page: {url}")
+    def parse_program_page(self, url: str) -> dict | None:
+        config = PROGRAM_CONFIG.get(url)
+        if not config:
+            logger.warning("Unknown Microsoft program URL: %s", url)
+            return None
 
-        # Return realistic sample data based on the URL
-        if "studentambassadors" in url:
-            return {
-                "name": "Microsoft Learn Student Ambassador",
-                "company": "Microsoft",
-                "apply_url": "https://learn.microsoft.com/en-us/training/studentambassadors/",
-                "status": "Unknown",
-                "role_type": "Student Expert/Leader",
-                "domain": "Tech",
-                "eligibility_summary": "Students aged 16+ enrolled in an accredited educational institution",
-                "location_notes": "Hybrid - virtual with optional local events",
-                "compensation_bucket": "Unpaid-or-perks",
-                "last_verified": "2024-01-20",
-                "short_description": "Students who passionately share technology with their peers.",
-                "responsibilities": [
-                    "Host workshops and events on Microsoft technologies",
-                    "Mentor peers in technical skills",
-                    "Share learning materials and resources",
-                    "Provide feedback on Microsoft learning products",
-                ],
-                "time_commitment": "5-15 hours/week",
-                "perks_detail": "Access to Microsoft Learn resources, cloud credits, software licenses, global community, mentorship opportunities",
-                "deadlines": {
-                    "application_round_1": "2024-03-15",
-                    "application_round_2": "2024-09-15",
-                },
-                "social_requirements": "Active participation in community forums and events",
-                "source_url": "https://learn.microsoft.com/en-us/training/studentambassadors/",
-                "source_snippet": "Microsoft Learn Student Ambassadors are students who amplify their impact by sharing their passion for technology with their peers.",
-                "school_restricted": False,
-                "notes": "Program accepts applications twice yearly",
-            }
-        elif "imagine-cup" in url:
-            return {
-                "name": "Microsoft Imagine Cup",
-                "company": "Microsoft",
-                "apply_url": "https://www.microsoft.com/en-us/imaginecup/",
-                "status": "Unknown",
-                "role_type": "Creator/Influencer",
-                "domain": "Tech",
-                "eligibility_summary": "Students aged 16+ enrolled in accredited educational institutions worldwide",
-                "location_notes": "Virtual competition with regional finals and world championship",
-                "compensation_bucket": "Unpaid-or-perks",
-                "last_verified": "2024-01-10",
-                "short_description": "Global technology competition for students to create innovative solutions to world's toughest challenges",
-                "responsibilities": [
-                    "Develop innovative technology project addressing a global issue",
-                    "Create project proposal, prototype, and pitch presentation",
-                    "Participate in online mentorship and skill-building sessions",
-                    "Present project at regional and potentially world final events",
-                ],
-                "time_commitment": "Flexible - project-based over 4-6 months",
-                "perks_detail": "Travel to world championship, mentorship from Microsoft experts, Azure credits, cash prizes up to $100,000",
-                "deadlines": {
-                    "registration": "2024-01-15",
-                    "regional_submission": "2024-03-31",
-                    "world_finals": "2024-05-15",
-                },
-                "social_requirements": "Document progress and share updates using #ImagineCup",
-                "source_url": "https://www.microsoft.com/en-us/imaginecup/",
-                "source_snippet": "The Imagine Cup is a global competition that empowers the next generation of computer science students to team up and use their creativity, passion and knowledge of technology to create applications that shape how we live, work and play.",
-                "school_restricted": False,
-                "notes": "Annual competition cycle: registration Jan-Mar, submissions Apr-May, finals May-Jun",
-            }
-        elif "/garage" in url:
-            return {
-                "name": "Microsoft Garage Internship",
-                "company": "Microsoft",
-                "apply_url": "https://www.microsoft.com/en-us/garage/students/",
-                "status": "Unknown",
-                "role_type": "Other",
-                "domain": "Tech",
-                "eligibility_summary": "Undergraduate and graduate students in computer science, engineering, or related fields",
-                "location_notes": "Hybrid - Remote work with optional Redmond, WA headquarters visits",
-                "compensation_bucket": "Paid",
-                "last_verified": "2024-02-01",
-                "short_description": "Experimental project internship where students work on cutting-edge Microsoft innovations",
-                "responsibilities": [
-                    "Work on experimental projects in areas like AI, AR/VR, or sustainability",
-                    "Collaborate with cross-functional teams of researchers and engineers",
-                    "Participate in hackathons and innovation workshops",
-                    "Document and present project outcomes to Microsoft leadership",
-                ],
-                "time_commitment": "40 hours/week (summer) or 20 hours/week (academic year)",
-                "perks_detail": "Competitive salary, housing assistance, professional development budget, potential full-time offer",
-                "deadlines": {
-                    "summer_application": "2024-01-15",
-                    "fall_application": "2024-07-15",
-                    "program_start": "2024-06-01",
-                    "program_end": "2024-08-30",
-                },
-                "social_requirements": "Share project highlights on LinkedIn using #MicrosoftGarage",
-                "source_url": "https://www.microsoft.com/en-us/garage/students/",
-                "source_snippet": "The Microsoft Garage is Microsoft's outlet for experimental projects. It's where employees, interns, and students work on passion projects that may someday become real Microsoft products and services.",
-                "school_restricted": False,
-                "notes": "Available as summer internships (12 weeks) or part-time during academic year",
-            }
-        elif "/leap" in url:
-            return {
-                "name": "Microsoft LEAP Apprenticeship Program",
-                "company": "Microsoft",
-                "apply_url": "https://www.microsoft.com/en-us/leap",
-                "status": "Unknown",
-                "role_type": "Other",
-                "domain": "Tech",
-                "eligibility_summary": "Career changers and non-traditional students with technical aptitude (no 4-year degree required)",
-                "location_notes": "Hybrid - Multiple US locations including Redmond, Atlanta, Chicago",
-                "compensation_bucket": "Paid",
-                "last_verified": "2024-01-30",
-                "short_description": "16-week immersive apprenticeship program to launch careers in software engineering",
-                "responsibilities": [
-                    "Complete intensive technical training in full-stack development",
-                    "Work on real Microsoft production projects with mentor guidance",
-                    "Participate in professional development and leadership training",
-                    "Transition to full-time roles based on performance",
-                ],
-                "time_commitment": "40 hours/week",
-                "perks_detail": "Competitive salary, benefits package, technical mentorship, potential full-time offer",
-                "deadlines": {
-                    "application": "2024-03-01",
-                    "program_start": "2024-06-03",
-                    "program_end": "2024-09-20",
-                },
-                "social_requirements": "Share learning journey using #MSLEAP",
-                "source_url": "https://www.microsoft.com/en-us/leap",
-                "source_snippet": "The LEAP (Leading Engineers to Advancement Program) is a 16-week immersive software engineering apprenticeship designed to develop and launch passionate, diverse talent into technical careers.",
-                "school_restricted": False,
-                "notes": "Program runs twice yearly: Spring (Mar-Aug) and Fall (Sep-Feb)",
-            }
-        elif "university-recruiting" in url:
-            return {
-                "name": "Microsoft University Recruiting Programs",
-                "company": "Microsoft",
-                "apply_url": "https://www.microsoft.com/en-us/university",
-                "status": "Unknown",
-                "role_type": "Other",
-                "domain": "Tech",
-                "eligibility_summary": "Undergraduate, graduate, and PhD students in relevant fields",
-                "location_notes": "Varies by program - multiple locations worldwide",
-                "compensation_bucket": "Paid",
-                "last_verified": "2024-02-15",
-                "short_description": "Collection of internships, co-ops, and entry-level programs for university students",
-                "responsibilities": [
-                    "Work on real projects in software engineering, data science, product management, etc.",
-                    "Participate in team meetings, code reviews, and agile development",
-                    "Receive mentorship from experienced Microsoft employees",
-                    "Present work and receive feedback throughout the internship term",
-                ],
-                "time_commitment": "40 hours/week (internships), varies for co-ops and part-time roles",
-                "perks_detail": "Competitive salary, relocation assistance, housing stipend, professional development opportunities",
-                "deadlines": {
-                    "internship_winter": "2024-09-15",
-                    "internship_spring": "2024-01-15",
-                    "internship_summer": "2024-03-15",
-                    "co-op_applications": "2024-06-01",
-                },
-                "social_requirements": "Share internship experience using #LifeAtMicrosoft",
-                "source_url": "https://www.microsoft.com/en-us/university",
-                "source_snippet": "Microsoft offers a variety of programs to help university students gain real-world experience and explore career paths in technology.",
-                "school_restricted": False,
-                "notes": "Multiple programs with different timelines: internships (summer/winter/spring), co-ops (alternating school/work), and year-round opportunities",
-            }
-        else:
-            # Fallback for any other URLs
-            return {
-                "name": "Microsoft Student Program",
-                "company": "Microsoft",
-                "apply_url": url,
-                "status": "Unknown",
-                "role_type": "Other",
-                "domain": "Tech",
-                "eligibility_summary": "Students enrolled in accredited educational institutions",
-                "location_notes": "Varies by specific program",
-                "compensation_bucket": "Unpaid-or-perks",
-                "last_verified": "2024-01-20",
-                "short_description": "Microsoft student program for skill development and community engagement.",
-                "responsibilities": [
-                    "Participate in program activities and events",
-                    "Engage with Microsoft technologies and community",
-                    "Contribute to program goals and objectives",
-                ],
-                "time_commitment": "Variable",
-                "perks_detail": "Access to Microsoft resources and community",
-                "source_url": url,
-                "source_snippet": "Microsoft student program.",
-                "school_restricted": False,
-                "notes": "Program specifics vary by offering",
-            }
+        soup = self._fetch_page(url)
+        if not soup:
+            return None
+
+        text = page_text(soup)
+        lower = text.lower()
+        if not any(keyword in lower for keyword in config["keywords"]):
+            logger.warning("Microsoft page missing expected signals for %s", config["name"])
+            return None
+
+        description = first_paragraph(soup) or config["name"]
+        apply_url = url
+        for link in soup.find_all("a", href=True):
+            href = link["href"]
+            link_text = link.get_text(strip=True).lower()
+            if href.startswith("http") and "apply" in link_text:
+                apply_url = href
+                break
+
+        return {
+            "name": config["name"],
+            "company": self.company_name,
+            "apply_url": apply_url,
+            "status": infer_status_from_text(text),
+            "role_type": config["role_type"],
+            "domain": config["domain"],
+            "eligibility_summary": (
+                "Students and early-career candidates (see program page for current requirements)"
+            ),
+            "location_notes": "Global / varies by program",
+            "compensation_bucket": "Unpaid-or-perks",
+            "last_verified": today_iso(),
+            "short_description": description[:300],
+            "source_url": url,
+            "source_snippet": snippet_from_text(text),
+            "school_restricted": False,
+            "notes": f"Parsed from live Microsoft program page ({url}).",
+        }
