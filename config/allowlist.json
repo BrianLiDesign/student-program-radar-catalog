@@ -1,61 +1,33 @@
 {
-  "description": "Allowlist of companies known to offer student ambassador/campus/creator programs",
-  "version": "1.1",
-  "last_updated": "2024-08-05",
+  "description": "Allowlist of companies with a public, scrapeable student program/apply page",
+  "version": "1.2",
+  "last_updated": "2026-08-07",
+  "audit_note": "Phase 1 WS0 trim-or-prove. Non-scrapeable companies moved to config/candidates.json.",
   "companies": [
     {
       "name": "Adobe",
       "known_programs": ["Adobe Student Ambassador"],
-      "base_url": "https://www.adobe.com",
-      "notes": "Creative software company with student ambassador program"
+      "base_url": "https://www.adobeforeducation.com",
+      "program_url": "https://www.adobeforeducation.com/student-ambassador-program",
+      "notes": "Public Student Ambassador page on adobeforeducation.com (legacy adobe.com/education/students/* ambassador URLs return 404)."
     },
     {
       "name": "Microsoft",
-      "known_programs": ["Microsoft Learn Student Ambassador"],
-      "base_url": "https://learn.microsoft.com",
-      "notes": "Technology company with student ambassador program"
+      "known_programs": [
+        "Microsoft Student Ambassadors",
+        "Imagine Cup",
+        "Microsoft LEAP"
+      ],
+      "base_url": "https://mvp.microsoft.com",
+      "program_url": "https://mvp.microsoft.com/studentambassadors",
+      "notes": "MSA lives at mvp.microsoft.com/studentambassadors (learn.microsoft.com/.../studentambassadors 404). Imagine Cup at imaginecup.microsoft.com; LEAP at leap.microsoft.com."
     },
     {
       "name": "GitHub",
       "known_programs": ["GitHub Campus Expert"],
-      "base_url": "https://education.github.com",
-      "notes": "Code hosting platform with campus expert program"
-    },
-    {
-      "name": "Apple",
-      "known_programs": ["Apple Campus Ambassador"],
-      "base_url": "https://www.apple.com",
-      "notes": "Technology company with campus ambassador program"
-    },
-    {
-      "name": "Google",
-      "known_programs": ["Google Student Ambassador"],
-      "base_url": "https://www.google.com",
-      "notes": "Technology company with student ambassador program"
-    },
-    {
-      "name": "Meta",
-      "known_programs": ["Meta Campus Ambassador"],
-      "base_url": "https://www.meta.com",
-      "notes": "Social media company with campus ambassador program"
-    },
-    {
-      "name": "Netflix",
-      "known_programs": ["Netflix Campus Ambassador"],
-      "base_url": "https://www.netflix.com",
-      "notes": "Entertainment company with campus ambassador program"
-    },
-    {
-      "name": "Spotify",
-      "known_programs": ["Spotify Student Ambassador"],
-      "base_url": "https://www.spotify.com",
-      "notes": "Music streaming company with student ambassador program"
-    },
-    {
-      "name": "Tesla",
-      "known_programs": ["Tesla Student Ambassador"],
-      "base_url": "https://www.tesla.com",
-      "notes": "Automotive and energy company with student ambassador program"
+      "base_url": "https://github.com/education",
+      "program_url": "https://github.com/education/students/campus-expert",
+      "notes": "Public Campus Experts page. Legacy education.github.com/programs/campus-experts returns 404; education.github.com/campus_experts redirects to login."
     }
   ]
 }

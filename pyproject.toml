@@ -19,7 +19,12 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-python_files = ["test_workflow.py", "test_scrape_programs.py", "test_dashboard.py"]
+python_files = [
+    "test_workflow.py",
+    "test_scrape_programs.py",
+    "test_dashboard.py",
+    "test_allowlist_audit.py",
+]
 testpaths = ["."]
 
 [tool.ruff]
@@ -43,6 +48,7 @@ ignore = [
 "config/scrapers/*" = ["E402"]  # sys.path setup before imports
 "test_workflow.py" = ["E402"]
 "test_scrape_programs.py" = ["E402"]
+"test_allowlist_audit.py" = ["E402"]
 
 [tool.ruff.format]
 quote-style = "double"

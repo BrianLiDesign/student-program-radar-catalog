@@ -25,8 +25,8 @@ class GitHubScraper(EnhancedBaseScraper):
         """
         urls = []
 
-        # GitHub Education campus experts page
-        campus_experts_url = "https://education.github.com/programs/campus-experts"
+        # Public Campus Experts page (legacy education.github.com/programs/campus-experts is 404)
+        campus_experts_url = "https://github.com/education/students/campus-expert"
         urls.append(campus_experts_url)
 
         logger.info(f"Found {len(urls)} potential program URLs for {self.company_name}")
@@ -42,7 +42,7 @@ class GitHubScraper(EnhancedBaseScraper):
 
         try:
             # Check if this is the campus experts page
-            if "campus-experts" not in url:
+            if "campus-expert" not in url and "campus-experts" not in url:
                 return None
 
             # Extract program information
@@ -70,7 +70,7 @@ class GitHubScraper(EnhancedBaseScraper):
 
             # Set required fields
             program_data["company"] = self.company_name
-            program_data["apply_url"] = "https://education.github.com/programs/campus-experts"
+            program_data["apply_url"] = "https://github.com/education/students/campus-expert"
             program_data["status"] = "Unknown"
             program_data["role_type"] = "Student Expert/Leader"
             program_data["domain"] = "Tech"
