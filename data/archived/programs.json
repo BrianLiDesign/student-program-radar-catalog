@@ -1,6 +1,6 @@
 [
   {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "id": "19a10f31-b04b-5135-b79f-555cff1c3bad",
     "name": "Adobe Student Ambassador",
     "company": "Adobe",
     "apply_url": "https://www.adobe.com/education/students/ambassador.html",
@@ -32,7 +32,7 @@
     "notes": "Annual program with applications typically opening in January\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.adobe.com/education/students/ambassador.html returned HTTP 404. Record was sample/stale; live Adobe Student Ambassador hub is https://www.adobeforeducation.com/student-ambassador-program (company kept on allowlist)."
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "id": "84850930-40ad-5591-a1b3-e1f83fe611b5",
     "name": "Adobe Creative Cloud Fellowship",
     "company": "Adobe",
     "apply_url": "https://www.adobe.com/education/students/creative-cloud-fellowship.html",
@@ -64,7 +64,7 @@
     "notes": "Fellowship runs June to December with applications in winter\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.adobe.com/education/students/creative-cloud-fellowship.html returned HTTP 404. No public replacement program page found; treated as unreal/dead sample record."
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "id": "7e072019-78ee-554a-a74b-496aaa552e4f",
     "name": "Adobe Design Circle",
     "company": "Adobe",
     "apply_url": "https://www.adobe.com/education/students/design-circle.html",
@@ -96,7 +96,7 @@
     "notes": "Design Circle runs March to November with rolling admissions\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.adobe.com/education/students/design-circle.html returned HTTP 404. No public replacement program page found; treated as unreal/dead sample record."
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "id": "1c72a7c6-5575-57fb-8c69-a367f4f21d07",
     "name": "Adobe University Outreach",
     "company": "Adobe",
     "apply_url": "https://www.adobe.com/education/students/university-outreach.html",
@@ -128,7 +128,7 @@
     "notes": "Academic year program with flexible start dates\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.adobe.com/education/students/university-outreach.html returned HTTP 404. No public replacement program page found; treated as unreal/dead sample record."
   },
   {
-    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "id": "07251db3-853b-52b6-864a-192923196f56",
     "name": "Adobe Ideapalooza",
     "company": "Adobe",
     "apply_url": "https://www.adobe.com/education/students/ideapalooza.html",
@@ -184,7 +184,7 @@
     "source_snippet": "Apple Campus Ambassadors are students who represent Apple on their college or university campuses.",
     "school_restricted": false,
     "notes": "Program availability varies by region and academic year\n\nArchived 2026-08-07 (allowlist audit #11): Apple Education marketing page is not a Campus Ambassador apply program. Apple moved to config/candidates.json.",
-    "id": "3ba33b4a-3c1a-5555-8e1b-6b2a81b144c3"
+    "id": "b2c10956-f96b-5c5a-96ef-2db2843c0620"
   },
   {
     "name": "Netflix Campus Ambassador",
@@ -211,10 +211,10 @@
     "source_snippet": "Netflix Campus Ambassadors are students who represent Netflix on their college or university campuses.",
     "school_restricted": false,
     "notes": "Netflix Early Talent programs vary by region and academic focus\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://jobs.netflix.com/early_talent returned HTTP 404. No public Campus Ambassador page found. Netflix moved to config/candidates.json.",
-    "id": "3ba33b4a-3c1a-5555-8e1e-6c0082cea8c9"
+    "id": "c57f4602-90fc-5f7b-8c70-2f3b0351f6e2"
   },
   {
-    "id": "d290f1ee-6c54-4b01-90e6-d701748f0855",
+    "id": "338e6816-b56f-5dc5-97b2-a724e667bbfa",
     "name": "Microsoft University Recruiting Programs",
     "company": "Microsoft",
     "apply_url": "https://www.microsoft.com/en-us/university",
@@ -247,7 +247,7 @@
     "notes": "Multiple programs with different timelines: internships (summer/winter/spring), co-ops (alternating school/work), and year-round opportunities\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.microsoft.com/en-us/university returned HTTP 404. Dead/unreal catalog row."
   },
   {
-    "id": "d290f1ee-6c54-4b01-90e6-d701748f0853",
+    "id": "7fc94ab4-51a7-5733-bd1b-69821cfb5c12",
     "name": "Microsoft Garage Internship",
     "company": "Microsoft",
     "apply_url": "https://www.microsoft.com/en-us/garage/students/",
