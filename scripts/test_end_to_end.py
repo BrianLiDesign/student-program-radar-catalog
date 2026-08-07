@@ -8,6 +8,9 @@ import json
 import os
 import shutil
 import sys
+from unittest.mock import patch
+
+from bs4 import BeautifulSoup
 
 # Add project root to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -17,14 +20,27 @@ from config.scrapers.adobe_scraper import AdobeScraper
 from generate_dashboard import generate_readme, get_project_root
 from validate_data import load_programs, load_schema, validate_programs
 
+ADOBE_FIXTURE_HTML = """
+<html><body>
+<h1>Adobe Student Ambassador Program</h1>
+<p>Lead creative communities on your campus as an Adobe Student Ambassador.</p>
+<p>Applications are now open for the upcoming cohort.</p>
+</body></html>
+"""
+
 
 def test_scraper_isolation():
     """Test Adobe scraper in isolation"""
     print("=== Testing Adobe Scraper in Isolation ===")
 
     try:
-        scraper = AdobeScraper("Adobe", "https://www.adobe.com")
-        programs = scraper.scrape_programs()
+        scraper = AdobeScraper("Adobe", "https://www.adobeforeducation.com")
+        with patch.object(
+            scraper,
+            "_fetch_page",
+            return_value=BeautifulSoup(ADOBE_FIXTURE_HTML, "html.parser"),
+        ):
+            programs = scraper.scrape_programs()
 
         print(f"[PASS] Adobe scraper found {len(programs)} programs")
 
