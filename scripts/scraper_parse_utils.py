@@ -55,8 +55,14 @@ def infer_status_from_text(text: str) -> str:
     return "Unknown"
 
 
+def normalize_whitespace(text: str) -> str:
+    """Collapse unicode line separators and repeated whitespace."""
+    cleaned = text.replace("\u2028", " ").replace("\u2029", " ")
+    return " ".join(cleaned.split())
+
+
 def snippet_from_text(text: str, max_length: int = 280) -> str:
-    cleaned = " ".join(text.split())
+    cleaned = normalize_whitespace(text)
     if len(cleaned) <= max_length:
         return cleaned
     return cleaned[: max_length - 3] + "..."

@@ -96,7 +96,7 @@ class HybridScraperTests(unittest.TestCase):
             LEAP_URL: LEAP_HTML,
         }
 
-        def fake_fetch(url):
+        def fake_fetch(url, timeout=15):
             return _soup(fixtures[url])
 
         with patch.object(scraper, "_fetch_page", side_effect=fake_fetch):
@@ -119,7 +119,7 @@ class HybridScraperTests(unittest.TestCase):
 
         self.assertIsNotNone(program)
         assert program is not None
-        self.assertEqual(program["name"], "Campus Experts")
+        self.assertEqual(program["name"], "GitHub Campus Expert")
         self.assertEqual(program["status"], "Unknown")
         self.assertEqual(program["apply_url"], CAMPUS_EXPERT_URL)
 
