@@ -257,7 +257,7 @@ class EnhancedBaseScraper(ABC):
             return code == 429 or 500 <= code < 600
         return False
 
-    def _fetch_page(self, url: str) -> Optional[BeautifulSoup]:
+    def _fetch_page(self, url: str, timeout: int = 15) -> Optional[BeautifulSoup]:
         """
         Fetch and parse a web page with caching, rate limiting, and retries.
         """
@@ -281,7 +281,7 @@ class EnhancedBaseScraper(ABC):
                 self.logger.info(
                     f"Fetching {url}" + (f" (attempt {attempt + 1})" if attempt else "")
                 )
-                response = self.session.get(url, timeout=15)
+                response = self.session.get(url, timeout=timeout)
                 response.raise_for_status()
 
                 if self.cache_manager:

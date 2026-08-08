@@ -25,6 +25,7 @@ from scraper_parse_utils import (
 logger = logging.getLogger(__name__)
 
 CAMPUS_EXPERT_URL = "https://github.com/education/students/campus-expert"
+CANONICAL_PROGRAM_NAME = "GitHub Campus Expert"
 
 
 class GitHubScraper(EnhancedBaseScraper):
@@ -49,10 +50,7 @@ class GitHubScraper(EnhancedBaseScraper):
             logger.warning("GitHub page missing campus expert signals: %s", url)
             return None
 
-        title_elem = soup.find("h1")
-        name = self._extract_text(title_elem) if title_elem else "GitHub Campus Expert"
-        if not name or len(name) > 120:
-            name = "GitHub Campus Expert"
+        name = CANONICAL_PROGRAM_NAME
 
         description = first_paragraph(soup) or (
             "GitHub Campus Experts are student leaders who build technical communities on campus."

@@ -1,37 +1,5 @@
 [
   {
-    "id": "19a10f31-b04b-5135-b79f-555cff1c3bad",
-    "name": "Adobe Student Ambassador",
-    "company": "Adobe",
-    "apply_url": "https://www.adobe.com/education/students/ambassador.html",
-    "status": "Closed",
-    "role_type": "Ambassador",
-    "domain": "Tech",
-    "eligibility_summary": "Full-time students at accredited universities in the United States",
-    "location_notes": "Remote/virtual",
-    "compensation_bucket": "Paid",
-    "last_verified": "2026-08-07",
-    "short_description": "Represent Adobe on campus, share your creativity, and gain professional experience.",
-    "responsibilities": [
-      "Host workshops and events",
-      "Create content for social media",
-      "Provide feedback on Adobe products",
-      "Connect with fellow students about Creative Cloud"
-    ],
-    "time_commitment": "5-10 hours/week",
-    "perks_detail": "Access to Adobe Creative Cloud, networking opportunities with Adobe employees, stipend, invitation to annual summit",
-    "deadlines": {
-      "application": "2024-03-01",
-      "program_start": "2024-06-01",
-      "program_end": "2025-05-31"
-    },
-    "social_requirements": "Minimum 3 posts per semester on social media using #AdobeAmbassador",
-    "source_url": "https://www.adobe.com/education/students/ambassador.html",
-    "source_snippet": "The Adobe Student Ambassador program is designed for students who are passionate about creativity and technology. Ambassadors receive training and resources to help them share their knowledge and creativity with peers on campus.",
-    "school_restricted": false,
-    "notes": "Annual program with applications typically opening in January\n\nArchived 2026-08-07 (allowlist audit #11): apply_url https://www.adobe.com/education/students/ambassador.html returned HTTP 404. Record was sample/stale; live Adobe Student Ambassador hub is https://www.adobeforeducation.com/student-ambassador-program (company kept on allowlist)."
-  },
-  {
     "id": "84850930-40ad-5591-a1b3-e1f83fe611b5",
     "name": "Adobe Creative Cloud Fellowship",
     "company": "Adobe",

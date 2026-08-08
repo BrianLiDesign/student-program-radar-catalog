@@ -64,7 +64,8 @@ class MicrosoftScraper(EnhancedBaseScraper):
             logger.warning("Unknown Microsoft program URL: %s", url)
             return None
 
-        soup = self._fetch_page(url)
+        fetch_timeout = 60 if "imaginecup.microsoft.com" in url else 15
+        soup = self._fetch_page(url, timeout=fetch_timeout)
         if not soup:
             return None
 
