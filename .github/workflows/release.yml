@@ -67,6 +67,8 @@ jobs:
           mkdir -p release/catalog
           cp data/active/programs.json release/catalog/programs.json
           cp data/archived/programs.json release/catalog/archived-programs.json
+          cp data/active/programs.json release/programs.json
+          cp data/archived/programs.json release/archived-programs.json
           cp README.md LICENSE release/catalog/
           cp -r docs release/catalog/docs
 
@@ -119,5 +121,5 @@ jobs:
             "release/student-program-radar-catalog-${VERSION}.zip" \
             "release/programs.csv" \
             "release/metadata.json" \
-            "data/active/programs.json#programs.json" \
-            "data/archived/programs.json#archived-programs.json"
+            "release/programs.json" \
+            "release/archived-programs.json"
