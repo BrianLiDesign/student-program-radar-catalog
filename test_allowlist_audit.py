@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -16,6 +17,7 @@ ALLOWLIST_NAMES = [
     "AMD",
     "Arm",
     "Canva",
+    "Cengage",
     "Coursera",
     "Databricks",
     "Elastic",
@@ -28,8 +30,12 @@ ALLOWLIST_NAMES = [
     "MongoDB",
     "Notion",
     "NVIDIA",
+    "Princess Polly",
+    "Red Bull",
     "Salesforce",
     "Unity",
+    "UiPath",
+    "Wolfram Research",
 ]
 
 CANDIDATE_NAMES = {"Apple", "Meta", "Netflix", "Spotify", "Tesla"}
@@ -63,6 +69,23 @@ class AllowlistAuditTests(unittest.TestCase):
         allow_names = {c["name"] for c in allowlist["companies"]}
         candidate_names = {c["name"] for c in candidates["candidates"]}
         self.assertFalse(allow_names & candidate_names)
+
+    def test_every_allowlisted_company_has_a_registered_scraper(self):
+        command = (
+            "import json, sys; "
+            "sys.path.insert(0, 'scripts'); "
+            "from scraper_framework import scraper_registry; "
+            "print(json.dumps(sorted(scraper_registry.scrapers)))"
+        )
+        result = subprocess.run(
+            [sys.executable, "-c", command],
+            cwd=PROJECT_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        registered = set(json.loads(result.stdout))
+        self.assertLessEqual(set(ALLOWLIST_NAMES), registered)
 
     def test_archive_helper_marks_closed_with_evidence(self):
         from apply_allowlist_audit import ARCHIVE_DECISIONS, apply_archive_decisions

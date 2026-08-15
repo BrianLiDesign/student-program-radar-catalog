@@ -120,6 +120,17 @@ Start a new batch anytime: re-read live allowlist and candidates, then walk Phas
 | 2026-08-08 | Google (GDG on Campus Lead) | IBM SkillsBuild, MongoDB for Students, Figma for Education, JetBrains Academy | Apple, Meta, Netflix, Spotify, Tesla |
 | 2026-08-08 (run 2) | — | Canva for Education, Databricks Academy, Notion for Education, NVIDIA Training, Salesforce Student Program | Apple, Meta, Netflix, Spotify, Tesla |
 | 2026-08-08 (run 3) | — | AMD University Program, Arm Education, Coursera for Campus, Elastic Training, Unity Education | Apple, Meta, Netflix, Spotify, Tesla |
+| 2026-08-15 | — | Cengage Student Ambassador, Princess Polly College Ambassador, Red Bull Student Marketeer, UiPath Student Developer Champions, Wolfram Student Ambassador | Apple, Meta, Netflix, Spotify, Tesla |
+
+Shortlist proven URLs used for 2026-08-15 batch:
+
+| Company | Program | URL | Notes |
+|---------|---------|-----|-------|
+| Cengage | Student Ambassador Program | https://www.cengage.com/student/ambassador/ | Paid North American undergraduate ambassador role with public application link |
+| Princess Polly | College Ambassador Program | https://us.princesspolly.com/pages/college-ambassador | 2026-27 U.S. college creator program with direct application |
+| Red Bull | Student Marketeer | https://jobs.redbull.com/us-en/microsite/student-marketeer?lang=en | Paid campus representative role with live North American student-job search |
+| UiPath | Student Developer Champions | https://community.uipath.com/uipath-student-developers-program/ | University student leader program with direct application form |
+| Wolfram Research | Student Ambassador Initiative | https://www.wolfram.com/company/careers/ambassador/ | Worldwide student ambassador program with active apply route |
 
 Shortlist proven URLs used for 2026-08-08 batch (run 3):
 

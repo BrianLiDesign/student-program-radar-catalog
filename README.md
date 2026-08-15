@@ -4,8 +4,9 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 
 ## Program Categories
 
-- [Ambassador (1)](#ambassador)
-- [Creator/Influencer (1)](#creator-influencer)
+- [Ambassador (3)](#ambassador)
+- [Campus Rep (1)](#campus-rep)
+- [Creator/Influencer (2)](#creator-influencer)
 - [Fellowship/Scholarship-adjacent (14)](#fellowship-scholarship-adjacent)
 - [Other (1)](#other)
 - [Student Expert/Leader (3)](#student-expert-leader)
@@ -15,29 +16,38 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
 | Adobe | Adobe Student Ambassador | ✅ Accepting | Unpaid-or-perks | Campus-based with virtual components | [![Apply](assets/apply.svg)](https://www.adobeforeducation.com/student-ambassador-program) |
+| Cengage | Cengage Student Ambassador Program | ✅ Accepting | Paid | North America; campus-based with virtual collaboration | [![Apply](assets/apply.svg)](https://cengage.wd5.myworkdayjobs.com/CengageNorthAmericaCareers?locationCountry=bc33aa3152ec42d4995f4791a106ed09&q=student+ambassador) |
+| Wolfram Research | Wolfram Student Ambassador Initiative | ✅ Accepting | Unpaid-or-perks | Global program with ambassadors in the United States | [![Apply](assets/apply.svg)](https://www.wolfram.com/company/careers/opportunities/#op-105148-student-ambassador-program-) |
+
+## Campus Rep
+
+| Company | Program | Status | Comp | Location | Apply |
+|---------|---------|--------|------|----------|-------|
+| Red Bull | Red Bull Student Marketeer | ✅ Accepting | Paid | Campus-based roles at participating U.S. universities | [![Apply](assets/apply.svg)](https://jobs.redbull.com/us-en/results?locations=2049&locationNames=North+America&functions=10&functionNames=Student+Jobs&keywords=) |
 
 ## Creator/Influencer
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Microsoft | Microsoft Imagine Cup | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://imaginecup.microsoft.com/en-us) |
+| Princess Polly | Princess Polly College Ambassador Program | ✅ Accepting | Paid | Open to students at U.S. and Canadian colleges | [![Apply](assets/apply.svg)](https://princesspolly.aspireiq.com/join/CAP2627) |
+| Microsoft | Microsoft Imagine Cup | 🔵 Cohort upcoming | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://imaginecup.microsoft.com/en-us) |
 
 ## Fellowship/Scholarship-adjacent
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
 | JetBrains | JetBrains Academy for Students | ✅ Accepting | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://hyperskill.org/projects/324?track=79) |
+| Canva | Canva for Education | 🟡 Rolling | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.canva.com/edu-signup/) |
+| Figma | Figma for Education | 🟡 Rolling | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.figma.com/education/apply) |
+| IBM | IBM SkillsBuild for University Students | 🟡 Rolling | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://skillsbuild.org/sign-up) |
+| MongoDB | MongoDB for Students | 🟡 Rolling | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.mongodb.com/cloud/atlas/register) |
+| Notion | Notion for Education | 🟡 Rolling | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.notion.com/help/notion-for-education) |
 | AMD | AMD University Program | ⚪ Unknown | Unpaid-or-perks | Global (online resources) | [![Apply](assets/apply.svg)](https://www.amd.com/en/corporate/university-program.html) |
 | Arm | Arm Education | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://learn.arm.com/?icid=devhub:developer:all-pages:nav-link) |
-| Canva | Canva for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.canva.com/edu-signup/) |
 | Coursera | Coursera for Campus | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.coursera.org/campus/learn-more) |
 | Databricks | Databricks Academy | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.databricks.com/training/catalog/get-started-with-databricks-for-machine-learning-2461) |
 | Elastic | Elastic Training | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://cloud.elastic.co/serverless-registration?pg=global&plcmt=nav&cta=205352-serverless) |
-| Figma | Figma for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.figma.com/education/apply) |
-| IBM | IBM SkillsBuild for University Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://skillsbuild.org/sign-up) |
-| MongoDB | MongoDB for Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.mongodb.com/cloud/atlas/register) |
 | NVIDIA | NVIDIA Training for Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.nvidia.com/en-us/startups/) |
-| Notion | Notion for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.notion.com/help/notion-for-education) |
 | Salesforce | Salesforce Student Program | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://trailheadacademy.salesforce.com/) |
 | Unity | Unity Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://learn.unity.com/educators) |
 
@@ -51,17 +61,17 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| GitHub | GitHub Campus Expert | ⚪ Unknown | Unpaid-or-perks | Global (virtual with local events) | [![Apply](assets/apply.svg)](https://github.com/education/students/campus-expert) |
-| Google | Google Developer Groups on Campus Lead | ⚪ Unknown | Unpaid-or-perks | Campus-based (global program) | [![Apply](assets/apply.svg)](https://app.advocu.com/gdg/join) |
-| Microsoft | Microsoft Learn Student Ambassador | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://mvp.microsoft.com/studentambassadors) |
+| Google | Google Developer Groups on Campus Lead | ✅ Accepting | Unpaid-or-perks | Campus-based (global program) | [![Apply](assets/apply.svg)](https://app.advocu.com/gdg/join) |
+| UiPath | UiPath Student Developer Champions | ✅ Accepting | Unpaid-or-perks | Campus-based global program; U.S. university students are eligible | [![Apply](assets/apply.svg)](https://forms.gle/XcpAyFn8ZiLzY6K79) |
+| Microsoft | Microsoft Learn Student Ambassador | 🟡 Rolling | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://mvp.microsoft.com/studentambassadors) |
 
 ## Repository Stats
 
-- **Active Programs:** 20
-- **Accepting Applications:** 2
-- **Rolling Admissions:** 0
-- **Cohort Upcoming:** 0
-- **Acceptance Rate:** 10.0%
+- **Active Programs:** 24
+- **Accepting Applications:** 8
+- **Rolling Admissions:** 6
+- **Cohort Upcoming:** 1
+- **Acceptance Rate:** 33.3%
 - **Avg Days Since Verification:** 0 days
 
 **Automation Health**: Last sweep: unavailable | Updated: unavailable | Failed scrapers: unavailable
@@ -105,4 +115,4 @@ This repository uses a dual license. See [NOTICE](NOTICE) for details.
 
 ## Last Updated
 
-*Last updated: 2026-08-14 by automated sweep process*
+*Last updated: 2026-08-15 by automated sweep process*

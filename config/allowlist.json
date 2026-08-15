@@ -1,8 +1,8 @@
 {
   "description": "Allowlist of companies with a public, scrapeable student program/apply page",
-  "version": "1.6",
-  "last_updated": "2026-08-14",
-  "audit_note": "Live status audit completed 2026-08-14. All existing scraper integrations remain allowlisted; only records explicitly reported Closed are archived.",
+  "version": "1.7",
+  "last_updated": "2026-08-15",
+  "audit_note": "Approved expansion batch 2026-08-15: added Cengage, Princess Polly, Red Bull, UiPath, and Wolfram Research after verifying public student-program and application pages.",
   "companies": [
     {
       "name": "Adobe",
@@ -31,6 +31,13 @@
       "base_url": "https://www.canva.com/education",
       "program_url": "https://www.canva.com/education/",
       "notes": "Public education hub for students and teachers with sign-up and classroom program flows."
+    },
+    {
+      "name": "Cengage",
+      "known_programs": ["Cengage Student Ambassador Program"],
+      "base_url": "https://www.cengage.com",
+      "program_url": "https://www.cengage.com/student/ambassador/",
+      "notes": "Public North American undergraduate ambassador page with eligibility, paid-role details, and an application link."
     },
     {
       "name": "Coursera",
@@ -121,6 +128,20 @@
       "notes": "Public NVIDIA training hub with student and educator learning resources (DLI)."
     },
     {
+      "name": "Princess Polly",
+      "known_programs": ["Princess Polly College Ambassador Program"],
+      "base_url": "https://us.princesspolly.com",
+      "program_url": "https://us.princesspolly.com/pages/college-ambassador",
+      "notes": "Public 2026-27 U.S. college ambassador page with a direct application route and commission details."
+    },
+    {
+      "name": "Red Bull",
+      "known_programs": ["Red Bull Student Marketeer"],
+      "base_url": "https://jobs.redbull.com",
+      "program_url": "https://jobs.redbull.com/us-en/microsite/student-marketeer?lang=en",
+      "notes": "Public university Student Marketeer page with current North American student-job application listings."
+    },
+    {
       "name": "Salesforce",
       "known_programs": ["Salesforce Student Program"],
       "base_url": "https://trailhead.salesforce.com",
@@ -133,6 +154,20 @@
       "base_url": "https://unity.com",
       "program_url": "https://unity.com/solutions/education",
       "notes": "Public Unity Education page for teaching real-time 3D and game development skills."
+    },
+    {
+      "name": "UiPath",
+      "known_programs": ["UiPath Student Developer Champions"],
+      "base_url": "https://community.uipath.com",
+      "program_url": "https://community.uipath.com/uipath-student-developers-program/",
+      "notes": "Public university student leader program with a direct application form and multiple annual onboarding cycles."
+    },
+    {
+      "name": "Wolfram Research",
+      "known_programs": ["Wolfram Student Ambassador Initiative"],
+      "base_url": "https://www.wolfram.com",
+      "program_url": "https://www.wolfram.com/company/careers/ambassador/",
+      "notes": "Public student ambassador page with worldwide university eligibility and an active application route."
     }
   ]
 }

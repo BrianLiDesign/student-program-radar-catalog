@@ -613,6 +613,12 @@ class EnhancedScraperRegistry:
 # Global registry instance
 scraper_registry = EnhancedScraperRegistry()
 
+SCRAPER_COMPANY_ALIASES = {
+    "PrincessPolly": "Princess Polly",
+    "RedBull": "Red Bull",
+    "Wolfram": "Wolfram Research",
+}
+
 
 def register_scrapers():
     """Import and register all scrapers from the config/scrapers directory"""
@@ -643,10 +649,10 @@ def register_scrapers():
                     ):
                         # Extract company name from the class name or use a default
                         # For example, GitHubScraper -> github
-                        company_name = item_name.replace("Scraper", "")
-                        # Handle special cases like GitHubScraper -> GitHub
-                        if company_name == "GitHub":
-                            pass  # Keep as is
+                        class_company_name = item_name.replace("Scraper", "")
+                        company_name = SCRAPER_COMPANY_ALIASES.get(
+                            class_company_name, class_company_name
+                        )
                         # Register the scraper
                         scraper_registry.register_scraper(company_name, item)
                         logger.info(f"Registered scraper: {company_name} -> {item_name}")
