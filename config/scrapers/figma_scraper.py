@@ -1,5 +1,5 @@
 """
-Google GDG on Campus / developer community scraper
+Figma for Education scraper
 """
 
 from __future__ import annotations
@@ -23,21 +23,21 @@ from scraper_parse_utils import (
 
 logger = logging.getLogger(__name__)
 
-COMMUNITY_URL = "https://developers.google.com/community"
-CANONICAL_PROGRAM_NAME = "Google Developer Groups on Campus Lead"
+HIGHER_ED_URL = "https://www.figma.com/education/higher-education/"
+CANONICAL_PROGRAM_NAME = "Figma for Education"
 
 
-class GoogleScraper(EnhancedBaseScraper):
-    """Google developer community scraper (GDG on Campus lead program)."""
+class FigmaScraper(EnhancedBaseScraper):
+    """Figma for Education (higher education) scraper."""
 
     def __init__(self, company_name: str, base_url: str):
         super().__init__(company_name, base_url, rate_limit_delay=1.5)
 
     def find_program_urls(self) -> list[str]:
-        return [COMMUNITY_URL]
+        return [HIGHER_ED_URL]
 
     def parse_program_page(self, url: str) -> dict | None:
-        if "developers.google.com" not in url:
+        if "figma.com/education" not in url:
             return None
 
         soup = self._fetch_page(url)
@@ -46,38 +46,42 @@ class GoogleScraper(EnhancedBaseScraper):
 
         text = page_text(soup)
         lower = text.lower()
-        if "developer group" not in lower and "gdg" not in lower:
-            logger.warning("Google community page missing GDG signals: %s", url)
+        if "student" not in lower and "education" not in lower:
+            logger.warning("Figma education page missing expected signals: %s", url)
             return None
 
         description = first_paragraph(soup) or (
-            "Lead a Google Developer Group on campus and grow a local developer community."
+            "Students and faculty get Figma for free with an Education plan."
         )
 
-        apply_url = COMMUNITY_URL
+        apply_url = HIGHER_ED_URL
         for link in soup.find_all("a", href=True):
             href = link["href"]
             link_text = link.get_text(strip=True).lower()
-            if href.startswith("http") and ("apply" in link_text or "lead" in link_text):
-                apply_url = href
-                break
+            if "verify" in link_text or "apply" in link_text or "education/apply" in href:
+                if href.startswith("http"):
+                    apply_url = href
+                    break
+                if href.startswith("/"):
+                    apply_url = f"https://www.figma.com{href}"
+                    break
 
         return {
             "name": CANONICAL_PROGRAM_NAME,
             "company": self.company_name,
             "apply_url": apply_url,
             "status": infer_status_from_text(text),
-            "role_type": "Student Expert/Leader",
-            "domain": "Tech",
+            "role_type": "Fellowship/Scholarship-adjacent",
+            "domain": "Design/Creative",
             "eligibility_summary": (
-                "University students who can lead or start a Google Developer Group on campus"
+                "Higher-education students and faculty with school-issued email (see Figma verification)"
             ),
-            "location_notes": "Campus-based (global program)",
+            "location_notes": "Global (online)",
             "compensation_bucket": "Unpaid-or-perks",
             "last_verified": today_iso(),
             "short_description": description[:300],
             "source_url": url,
             "source_snippet": snippet_from_text(text),
             "school_restricted": False,
-            "notes": "Parsed from developers.google.com/community (GDG on Campus lead content).",
+            "notes": "Parsed from figma.com/education/higher-education landing page.",
         }

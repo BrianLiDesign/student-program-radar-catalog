@@ -1,8 +1,8 @@
 {
   "description": "Allowlist of companies with a public, scrapeable student program/apply page",
-  "version": "1.2",
-  "last_updated": "2026-08-07",
-  "audit_note": "Phase 1 WS0 trim-or-prove. Non-scrapeable companies moved to config/candidates.json.",
+  "version": "1.5",
+  "last_updated": "2026-08-08",
+  "audit_note": "Batch 2026-08-08 (run 3): added AMD, Arm, Coursera, Elastic, Unity. Candidates re-audited; still parked. See docs/ADD_COMPANIES.md.",
   "companies": [
     {
       "name": "Adobe",
@@ -10,6 +10,83 @@
       "base_url": "https://www.adobeforeducation.com",
       "program_url": "https://www.adobeforeducation.com/student-ambassador-program",
       "notes": "Public Student Ambassador page on adobeforeducation.com (legacy adobe.com/education/students/* ambassador URLs return 404)."
+    },
+    {
+      "name": "AMD",
+      "known_programs": ["AMD University Program"],
+      "base_url": "https://www.amd.com",
+      "program_url": "https://www.amd.com/en/corporate/university-program.html",
+      "notes": "Public university program hub for educators, researchers, and students."
+    },
+    {
+      "name": "Arm",
+      "known_programs": ["Arm Education"],
+      "base_url": "https://www.arm.com",
+      "program_url": "https://www.arm.com/resources/education",
+      "notes": "Public Arm Education resources for students and educators learning embedded systems."
+    },
+    {
+      "name": "Canva",
+      "known_programs": ["Canva for Education"],
+      "base_url": "https://www.canva.com/education",
+      "program_url": "https://www.canva.com/education/",
+      "notes": "Public education hub for students and teachers with sign-up and classroom program flows."
+    },
+    {
+      "name": "Coursera",
+      "known_programs": ["Coursera for Campus"],
+      "base_url": "https://www.coursera.org",
+      "program_url": "https://www.coursera.org/campus",
+      "notes": "Public Coursera for Campus page for university online learning and student employability."
+    },
+    {
+      "name": "Databricks",
+      "known_programs": ["Databricks Academy"],
+      "base_url": "https://www.databricks.com",
+      "program_url": "https://www.databricks.com/learn/training/home",
+      "notes": "Public Databricks Academy training home with student and educator learning paths."
+    },
+    {
+      "name": "Elastic",
+      "known_programs": ["Elastic Training"],
+      "base_url": "https://www.elastic.co",
+      "program_url": "https://www.elastic.co/training",
+      "notes": "Public Elastic training hub with courses and certifications for students and professionals."
+    },
+    {
+      "name": "Figma",
+      "known_programs": ["Figma for Education"],
+      "base_url": "https://www.figma.com/education",
+      "program_url": "https://www.figma.com/education/higher-education/",
+      "notes": "Public higher-education landing page with student verification flow via figma.com/education/apply."
+    },
+    {
+      "name": "GitHub",
+      "known_programs": ["GitHub Campus Expert"],
+      "base_url": "https://github.com/education",
+      "program_url": "https://github.com/education/students/campus-expert",
+      "notes": "Public Campus Experts page. Legacy education.github.com/programs/campus-experts returns 404; education.github.com/campus_experts redirects to login."
+    },
+    {
+      "name": "Google",
+      "known_programs": ["Google Developer Groups on Campus Lead"],
+      "base_url": "https://developers.google.com",
+      "program_url": "https://developers.google.com/community",
+      "notes": "GDSC leads consolidated under developers.google.com/community (GDG on Campus lead content). Legacy students.google.com does not resolve."
+    },
+    {
+      "name": "IBM",
+      "known_programs": ["IBM SkillsBuild for University Students"],
+      "base_url": "https://skillsbuild.org",
+      "program_url": "https://skillsbuild.org/university/students",
+      "notes": "Public university student landing page with sign-up for free AI and career skills training."
+    },
+    {
+      "name": "JetBrains",
+      "known_programs": ["JetBrains Academy for Students"],
+      "base_url": "https://www.jetbrains.com",
+      "program_url": "https://www.jetbrains.com/academy/",
+      "notes": "Public JetBrains Academy page with student learning paths and apply/get-started flows."
     },
     {
       "name": "Microsoft",
@@ -23,11 +100,39 @@
       "notes": "MSA lives at mvp.microsoft.com/studentambassadors (learn.microsoft.com/.../studentambassadors 404). Imagine Cup at imaginecup.microsoft.com; LEAP at leap.microsoft.com."
     },
     {
-      "name": "GitHub",
-      "known_programs": ["GitHub Campus Expert"],
-      "base_url": "https://github.com/education",
-      "program_url": "https://github.com/education/students/campus-expert",
-      "notes": "Public Campus Experts page. Legacy education.github.com/programs/campus-experts returns 404; education.github.com/campus_experts redirects to login."
+      "name": "MongoDB",
+      "known_programs": ["MongoDB for Students"],
+      "base_url": "https://www.mongodb.com",
+      "program_url": "https://www.mongodb.com/students",
+      "notes": "Public MongoDB for Students / Student Pack benefits page (includes GitHub Student Developer Pack pathway)."
+    },
+    {
+      "name": "Notion",
+      "known_programs": ["Notion for Education"],
+      "base_url": "https://www.notion.com",
+      "program_url": "https://www.notion.com/help/notion-for-education",
+      "notes": "Public Notion for Education help hub including Campus Leaders program references and student signup guidance."
+    },
+    {
+      "name": "NVIDIA",
+      "known_programs": ["NVIDIA Training for Students"],
+      "base_url": "https://www.nvidia.com",
+      "program_url": "https://www.nvidia.com/en-us/training/",
+      "notes": "Public NVIDIA training hub with student and educator learning resources (DLI)."
+    },
+    {
+      "name": "Salesforce",
+      "known_programs": ["Salesforce Student Program"],
+      "base_url": "https://trailhead.salesforce.com",
+      "program_url": "https://trailhead.salesforce.com/help?article=Student-Program",
+      "notes": "Trailhead help article describing the Salesforce Student Program and how students can participate."
+    },
+    {
+      "name": "Unity",
+      "known_programs": ["Unity Education"],
+      "base_url": "https://unity.com",
+      "program_url": "https://unity.com/solutions/education",
+      "notes": "Public Unity Education page for teaching real-time 3D and game development skills."
     }
   ]
 }

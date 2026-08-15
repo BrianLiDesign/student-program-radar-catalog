@@ -80,7 +80,7 @@ python scripts/data_quality_workflow.py
 
 ## Adding a scraper
 
-See [AUTOMATION.md](../AUTOMATION.md) and [docs/SCRAPER_CHECKLIST.md](SCRAPER_CHECKLIST.md).
+See [AUTOMATION.md](../AUTOMATION.md), [docs/SCRAPER_CHECKLIST.md](SCRAPER_CHECKLIST.md), and the reusable batch playbook [docs/ADD_COMPANIES.md](ADD_COMPANIES.md).
 
 ## Data quality pipeline
 

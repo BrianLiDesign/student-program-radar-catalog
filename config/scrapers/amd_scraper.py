@@ -1,5 +1,5 @@
 """
-Google GDG on Campus / developer community scraper
+AMD University Program scraper
 """
 
 from __future__ import annotations
@@ -23,21 +23,21 @@ from scraper_parse_utils import (
 
 logger = logging.getLogger(__name__)
 
-COMMUNITY_URL = "https://developers.google.com/community"
-CANONICAL_PROGRAM_NAME = "Google Developer Groups on Campus Lead"
+UNIVERSITY_PROGRAM_URL = "https://www.amd.com/en/corporate/university-program.html"
+CANONICAL_PROGRAM_NAME = "AMD University Program"
 
 
-class GoogleScraper(EnhancedBaseScraper):
-    """Google developer community scraper (GDG on Campus lead program)."""
+class AMDScraper(EnhancedBaseScraper):
+    """AMD University Program scraper."""
 
     def __init__(self, company_name: str, base_url: str):
         super().__init__(company_name, base_url, rate_limit_delay=1.5)
 
     def find_program_urls(self) -> list[str]:
-        return [COMMUNITY_URL]
+        return [UNIVERSITY_PROGRAM_URL]
 
     def parse_program_page(self, url: str) -> dict | None:
-        if "developers.google.com" not in url:
+        if "amd.com" not in url or "university-program" not in url:
             return None
 
         soup = self._fetch_page(url)
@@ -46,38 +46,33 @@ class GoogleScraper(EnhancedBaseScraper):
 
         text = page_text(soup)
         lower = text.lower()
-        if "developer group" not in lower and "gdg" not in lower:
-            logger.warning("Google community page missing GDG signals: %s", url)
+        if "university" not in lower and "student" not in lower:
+            logger.warning("AMD university page missing expected signals: %s", url)
             return None
 
+        title_elem = soup.find("h1")
+        name = self._extract_text(title_elem) if title_elem else CANONICAL_PROGRAM_NAME
+        if not name or len(name) > 120:
+            name = CANONICAL_PROGRAM_NAME
+
         description = first_paragraph(soup) or (
-            "Lead a Google Developer Group on campus and grow a local developer community."
+            "Hub for educators, researchers, and students to access AMD resources and programs."
         )
 
-        apply_url = COMMUNITY_URL
-        for link in soup.find_all("a", href=True):
-            href = link["href"]
-            link_text = link.get_text(strip=True).lower()
-            if href.startswith("http") and ("apply" in link_text or "lead" in link_text):
-                apply_url = href
-                break
-
         return {
-            "name": CANONICAL_PROGRAM_NAME,
+            "name": name,
             "company": self.company_name,
-            "apply_url": apply_url,
+            "apply_url": UNIVERSITY_PROGRAM_URL,
             "status": infer_status_from_text(text),
-            "role_type": "Student Expert/Leader",
+            "role_type": "Fellowship/Scholarship-adjacent",
             "domain": "Tech",
-            "eligibility_summary": (
-                "University students who can lead or start a Google Developer Group on campus"
-            ),
-            "location_notes": "Campus-based (global program)",
+            "eligibility_summary": "University educators, researchers, and students (see AMD University Program)",
+            "location_notes": "Global (online resources)",
             "compensation_bucket": "Unpaid-or-perks",
             "last_verified": today_iso(),
             "short_description": description[:300],
             "source_url": url,
             "source_snippet": snippet_from_text(text),
             "school_restricted": False,
-            "notes": "Parsed from developers.google.com/community (GDG on Campus lead content).",
+            "notes": "Parsed from amd.com university program page.",
         }

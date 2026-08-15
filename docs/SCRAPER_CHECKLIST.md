@@ -4,7 +4,7 @@ Use this checklist when adding or updating a company scraper.
 
 ## Before coding
 
-- [ ] Company is on `config/allowlist.json` (or open an issue to propose addition)
+- [ ] Company is on `config/allowlist.json` (or follow [docs/ADD_COMPANIES.md](ADD_COMPANIES.md) to propose and prove addition)
 - [ ] Target pages are public and do not require authentication
 - [ ] You have identified stable URLs for program listings and detail pages
 
@@ -39,6 +39,7 @@ Use this checklist when adding or updating a company scraper.
 
 ## Related docs
 
+- [docs/ADD_COMPANIES.md](ADD_COMPANIES.md) — reusable playbook to expand the allowlist
 - [AUTOMATION.md](../AUTOMATION.md)
 - [docs/DEVELOPMENT.md](DEVELOPMENT.md)
 - [docs/SCHEMA.md](SCHEMA.md)

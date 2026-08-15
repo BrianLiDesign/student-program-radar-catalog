@@ -1,5 +1,5 @@
 """
-Google GDG on Campus / developer community scraper
+Databricks Academy scraper
 """
 
 from __future__ import annotations
@@ -23,21 +23,21 @@ from scraper_parse_utils import (
 
 logger = logging.getLogger(__name__)
 
-COMMUNITY_URL = "https://developers.google.com/community"
-CANONICAL_PROGRAM_NAME = "Google Developer Groups on Campus Lead"
+TRAINING_HOME_URL = "https://www.databricks.com/learn/training/home"
+CANONICAL_PROGRAM_NAME = "Databricks Academy"
 
 
-class GoogleScraper(EnhancedBaseScraper):
-    """Google developer community scraper (GDG on Campus lead program)."""
+class DatabricksScraper(EnhancedBaseScraper):
+    """Databricks Academy training scraper."""
 
     def __init__(self, company_name: str, base_url: str):
         super().__init__(company_name, base_url, rate_limit_delay=1.5)
 
     def find_program_urls(self) -> list[str]:
-        return [COMMUNITY_URL]
+        return [TRAINING_HOME_URL]
 
     def parse_program_page(self, url: str) -> dict | None:
-        if "developers.google.com" not in url:
+        if "databricks.com/learn" not in url:
             return None
 
         soup = self._fetch_page(url)
@@ -46,19 +46,19 @@ class GoogleScraper(EnhancedBaseScraper):
 
         text = page_text(soup)
         lower = text.lower()
-        if "developer group" not in lower and "gdg" not in lower:
-            logger.warning("Google community page missing GDG signals: %s", url)
+        if "training" not in lower and "learn" not in lower:
+            logger.warning("Databricks training page missing expected signals: %s", url)
             return None
 
         description = first_paragraph(soup) or (
-            "Lead a Google Developer Group on campus and grow a local developer community."
+            "Databricks Academy offers free training on data engineering and machine learning."
         )
 
-        apply_url = COMMUNITY_URL
+        apply_url = TRAINING_HOME_URL
         for link in soup.find_all("a", href=True):
             href = link["href"]
             link_text = link.get_text(strip=True).lower()
-            if href.startswith("http") and ("apply" in link_text or "lead" in link_text):
+            if href.startswith("http") and ("start" in link_text or "enroll" in link_text):
                 apply_url = href
                 break
 
@@ -67,17 +67,15 @@ class GoogleScraper(EnhancedBaseScraper):
             "company": self.company_name,
             "apply_url": apply_url,
             "status": infer_status_from_text(text),
-            "role_type": "Student Expert/Leader",
+            "role_type": "Fellowship/Scholarship-adjacent",
             "domain": "Tech",
-            "eligibility_summary": (
-                "University students who can lead or start a Google Developer Group on campus"
-            ),
-            "location_notes": "Campus-based (global program)",
+            "eligibility_summary": "Students and professionals learning data and AI skills (see Databricks Academy)",
+            "location_notes": "Online / global",
             "compensation_bucket": "Unpaid-or-perks",
             "last_verified": today_iso(),
             "short_description": description[:300],
             "source_url": url,
             "source_snippet": snippet_from_text(text),
             "school_restricted": False,
-            "notes": "Parsed from developers.google.com/community (GDG on Campus lead content).",
+            "notes": "Parsed from databricks.com/learn/training/home.",
         }

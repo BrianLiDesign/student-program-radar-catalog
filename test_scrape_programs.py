@@ -26,6 +26,30 @@ class MergeProgramsTests(unittest.TestCase):
 
         self.assertEqual(merged, [{"id": "duplicate", "name": "Latest"}])
 
+    def test_same_source_url_replaces_when_id_changes(self):
+        existing = [
+            {
+                "id": "old-id",
+                "name": "Reimagine learning",
+                "company": "Canva",
+                "source_url": "https://www.canva.com/education/",
+            }
+        ]
+        new = [
+            {
+                "id": "new-id",
+                "name": "Canva for Education",
+                "company": "Canva",
+                "source_url": "https://www.canva.com/education/",
+            }
+        ]
+
+        merged = merge_programs(existing, new)
+
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["id"], "new-id")
+        self.assertEqual(merged[0]["name"], "Canva for Education")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,5 @@
 """
-Google GDG on Campus / developer community scraper
+Coursera for Campus scraper
 """
 
 from __future__ import annotations
@@ -23,21 +23,21 @@ from scraper_parse_utils import (
 
 logger = logging.getLogger(__name__)
 
-COMMUNITY_URL = "https://developers.google.com/community"
-CANONICAL_PROGRAM_NAME = "Google Developer Groups on Campus Lead"
+CAMPUS_URL = "https://www.coursera.org/campus"
+CANONICAL_PROGRAM_NAME = "Coursera for Campus"
 
 
-class GoogleScraper(EnhancedBaseScraper):
-    """Google developer community scraper (GDG on Campus lead program)."""
+class CourseraScraper(EnhancedBaseScraper):
+    """Coursera for Campus scraper."""
 
     def __init__(self, company_name: str, base_url: str):
         super().__init__(company_name, base_url, rate_limit_delay=1.5)
 
     def find_program_urls(self) -> list[str]:
-        return [COMMUNITY_URL]
+        return [CAMPUS_URL]
 
     def parse_program_page(self, url: str) -> dict | None:
-        if "developers.google.com" not in url:
+        if "coursera.org/campus" not in url:
             return None
 
         soup = self._fetch_page(url)
@@ -46,38 +46,41 @@ class GoogleScraper(EnhancedBaseScraper):
 
         text = page_text(soup)
         lower = text.lower()
-        if "developer group" not in lower and "gdg" not in lower:
-            logger.warning("Google community page missing GDG signals: %s", url)
+        if "campus" not in lower and "student" not in lower:
+            logger.warning("Coursera campus page missing expected signals: %s", url)
             return None
 
+        title_elem = soup.find("h1")
+        name = self._extract_text(title_elem) if title_elem else CANONICAL_PROGRAM_NAME
+        if not name or len(name) > 120 or "employability" in name.lower():
+            name = CANONICAL_PROGRAM_NAME
+
         description = first_paragraph(soup) or (
-            "Lead a Google Developer Group on campus and grow a local developer community."
+            "Coursera for Campus equips students with in-demand skills through online learning."
         )
 
-        apply_url = COMMUNITY_URL
+        apply_url = CAMPUS_URL
         for link in soup.find_all("a", href=True):
             href = link["href"]
             link_text = link.get_text(strip=True).lower()
-            if href.startswith("http") and ("apply" in link_text or "lead" in link_text):
+            if href.startswith("http") and ("contact" in link_text or "learn more" in link_text):
                 apply_url = href
                 break
 
         return {
-            "name": CANONICAL_PROGRAM_NAME,
+            "name": name,
             "company": self.company_name,
             "apply_url": apply_url,
             "status": infer_status_from_text(text),
-            "role_type": "Student Expert/Leader",
-            "domain": "Tech",
-            "eligibility_summary": (
-                "University students who can lead or start a Google Developer Group on campus"
-            ),
-            "location_notes": "Campus-based (global program)",
+            "role_type": "Fellowship/Scholarship-adjacent",
+            "domain": "Education/EdTech",
+            "eligibility_summary": "Universities and students participating in Coursera for Campus",
+            "location_notes": "Online / global",
             "compensation_bucket": "Unpaid-or-perks",
             "last_verified": today_iso(),
             "short_description": description[:300],
             "source_url": url,
             "source_snippet": snippet_from_text(text),
             "school_restricted": False,
-            "notes": "Parsed from developers.google.com/community (GDG on Campus lead content).",
+            "notes": "Parsed from coursera.org/campus.",
         }

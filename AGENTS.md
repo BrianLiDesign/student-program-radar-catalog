@@ -52,6 +52,7 @@ make dq         # data quality pipeline
 4. Add company to `config/allowlist.json`
 5. Test with mocked HTTP — no live network in CI
 6. See `docs/SCRAPER_CHECKLIST.md`
+7. To add companies in batch, follow `docs/ADD_COMPANIES.md` (reusable playbook)
 
 Program IDs are UUID v5 from `scripts/program_ids.py` — never hardcode arbitrary IDs.
 
@@ -84,10 +85,12 @@ Test files: `test_workflow.py`, `test_scrape_programs.py`.
 | `scripts/validate_data.py` | Schema validator |
 | `scripts/program_ids.py` | UUID v5 ID generation |
 | `CONTEXT.md` | Domain glossary |
+| `docs/ADD_COMPANIES.md` | Reusable playbook to expand the allowlist |
 | `docs/adr/` | Architecture decisions |
 
 ## Related docs
 
+- [docs/ADD_COMPANIES.md](docs/ADD_COMPANIES.md)
 - [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 - [AUTOMATION.md](AUTOMATION.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)

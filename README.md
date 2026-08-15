@@ -4,63 +4,65 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 
 ## Program Categories
 
-- [Ambassador (3)](#ambassador)
-- [Creator/Influencer (3)](#creator-influencer)
-- [Fellowship/Scholarship-adjacent (1)](#fellowship-scholarship-adjacent)
-- [Organizer/Coach (1)](#organizer-coach)
-- [Other (3)](#other)
-- [Student Expert/Leader (1)](#student-expert-leader)
+- [Ambassador (1)](#ambassador)
+- [Creator/Influencer (1)](#creator-influencer)
+- [Fellowship/Scholarship-adjacent (14)](#fellowship-scholarship-adjacent)
+- [Other (1)](#other)
+- [Student Expert/Leader (3)](#student-expert-leader)
 
 ## Ambassador
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Adobe | Adobe Student Ambassador | ⚪ Unknown | Paid | Remote/virtual | [![Apply](assets/apply.svg)](https://www.adobe.com/education/students/ambassador.html) |
-| Apple | Apple Education | ⚪ Unknown | Unpaid-or-perks | Campus-based (varies by location) | [![Apply](assets/apply.svg)](https://www.apple.com/education/) |
-| Netflix | Netflix Campus Ambassador | ⚪ Unknown | Paid | Campus-based or remote (varies by program) | [![Apply](assets/apply.svg)](https://jobs.netflix.com/early_talent) |
+| Adobe | Adobe Student Ambassador | ✅ Accepting | Unpaid-or-perks | Campus-based with virtual components | [![Apply](assets/apply.svg)](https://www.adobeforeducation.com/student-ambassador-program) |
 
 ## Creator/Influencer
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Adobe | Adobe Design Circle | ⚪ Unknown | Unpaid-or-perks | Remote/virtual with optional regional meetups | [![Apply](assets/apply.svg)](https://www.adobe.com/education/students/design-circle.html) |
-| Adobe | Adobe Ideapalooza | ⚪ Unknown | Unpaid-or-perks | Virtual competition | [![Apply](assets/apply.svg)](https://www.adobe.com/education/students/ideapalooza.html) |
-| Microsoft | Microsoft Imagine Cup | ⚪ Unknown | Unpaid-or-perks | Virtual competition with regional finals and world championship | [![Apply](assets/apply.svg)](https://www.microsoft.com/en-us/imaginecup/) |
+| Microsoft | Microsoft Imagine Cup | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://imaginecup.microsoft.com/en-us) |
 
 ## Fellowship/Scholarship-adjacent
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Adobe | Adobe Creative Cloud Fellowship | ⚪ Unknown | Paid | Hybrid - virtual meetings with annual summit in San Francisco | [![Apply](assets/apply.svg)](https://www.adobe.com/education/students/creative-cloud-fellowship.html) |
-
-## Organizer/Coach
-
-| Company | Program | Status | Comp | Location | Apply |
-|---------|---------|--------|------|----------|-------|
-| Adobe | Adobe University Outreach | ⚪ Unknown | Unpaid-or-perks | Campus-based (various locations) | [![Apply](assets/apply.svg)](https://www.adobe.com/education/students/university-outreach.html) |
+| JetBrains | JetBrains Academy for Students | ✅ Accepting | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://hyperskill.org/projects/324?track=79) |
+| AMD | AMD University Program | ⚪ Unknown | Unpaid-or-perks | Global (online resources) | [![Apply](assets/apply.svg)](https://www.amd.com/en/corporate/university-program.html) |
+| Arm | Arm Education | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://learn.arm.com/?icid=devhub:developer:all-pages:nav-link) |
+| Canva | Canva for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.canva.com/edu-signup/) |
+| Coursera | Coursera for Campus | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.coursera.org/campus/learn-more) |
+| Databricks | Databricks Academy | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.databricks.com/training/catalog/get-started-with-databricks-for-machine-learning-2461) |
+| Elastic | Elastic Training | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://cloud.elastic.co/serverless-registration?pg=global&plcmt=nav&cta=205352-serverless) |
+| Figma | Figma for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.figma.com/education/apply) |
+| IBM | IBM SkillsBuild for University Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://skillsbuild.org/sign-up) |
+| MongoDB | MongoDB for Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.mongodb.com/cloud/atlas/register) |
+| NVIDIA | NVIDIA Training for Students | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://www.nvidia.com/en-us/startups/) |
+| Notion | Notion for Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://www.notion.com/help/notion-for-education) |
+| Salesforce | Salesforce Student Program | ⚪ Unknown | Unpaid-or-perks | Online / global | [![Apply](assets/apply.svg)](https://trailheadacademy.salesforce.com/) |
+| Unity | Unity Education | ⚪ Unknown | Unpaid-or-perks | Global (online) | [![Apply](assets/apply.svg)](https://learn.unity.com/educators) |
 
 ## Other
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Microsoft | Microsoft Garage Internship | ⚪ Unknown | Paid | Hybrid - Remote work with optional Redmond, WA headquarters visits | [![Apply](assets/apply.svg)](https://www.microsoft.com/en-us/garage/students/) |
-| Microsoft | Microsoft LEAP Apprenticeship Program | ⚪ Unknown | Paid | Hybrid - Multiple US locations including Redmond, Atlanta, Chicago | [![Apply](assets/apply.svg)](https://www.microsoft.com/en-us/leap) |
-| Microsoft | Microsoft University Recruiting Programs | ⚪ Unknown | Paid | Varies by program - multiple locations worldwide | [![Apply](assets/apply.svg)](https://www.microsoft.com/en-us/university) |
+| Microsoft | Microsoft LEAP Apprenticeship Program | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://leap.microsoft.com/en-US/) |
 
 ## Student Expert/Leader
 
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
-| Microsoft | Microsoft Learn Student Ambassador | ⚪ Unknown | Unpaid-or-perks | Hybrid - virtual with optional local events | [![Apply](assets/apply.svg)](https://learn.microsoft.com/en-us/training/studentambassadors/) |
+| GitHub | GitHub Campus Expert | ⚪ Unknown | Unpaid-or-perks | Global (virtual with local events) | [![Apply](assets/apply.svg)](https://github.com/education/students/campus-expert) |
+| Google | Google Developer Groups on Campus Lead | ⚪ Unknown | Unpaid-or-perks | Campus-based (global program) | [![Apply](assets/apply.svg)](https://app.advocu.com/gdg/join) |
+| Microsoft | Microsoft Learn Student Ambassador | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://mvp.microsoft.com/studentambassadors) |
 
 ## Repository Stats
 
-- **Active Programs:** 12
-- **Accepting Applications:** 0
+- **Active Programs:** 20
+- **Accepting Applications:** 2
 - **Rolling Admissions:** 0
 - **Cohort Upcoming:** 0
-- **Acceptance Rate:** 0.0%
-- **Avg Days Since Verification:** 890 days
+- **Acceptance Rate:** 10.0%
+- **Avg Days Since Verification:** 0 days
 
 **Automation Health**: Last sweep: unavailable | Updated: unavailable | Failed scrapers: unavailable
 
@@ -75,7 +77,7 @@ python scripts/test_end_to_end.py
 python scripts/validate_data.py
 ```
 
-Run `python scripts/scrape_programs.py` to refresh catalog data, then `python scripts/generate_dashboard.py` to regenerate this README.
+Run `python scripts/scrape_programs.py` to refresh catalog data and regenerate this README.
 
 ## Documentation
 
@@ -103,4 +105,4 @@ This repository uses a dual license. See [NOTICE](NOTICE) for details.
 
 ## Last Updated
 
-*Last updated: 2026-08-05 by automated sweep process*
+*Last updated: 2026-08-14 by automated sweep process*

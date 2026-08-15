@@ -8,11 +8,12 @@ import json
 import logging
 import os
 import sys
+from typing import Optional
 
 # Add the scripts directory to the path so we can import from it
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
-from generate_dashboard import get_project_root
+from generate_dashboard import generate_readme, get_project_root
 from scraper_framework import scraper_registry
 from validate_data import load_schema, validate_programs
 
@@ -105,38 +106,70 @@ def save_programs(filepath: str, programs: list[dict]):
         logger.error(f"Error saving programs to {filepath}: {e}")
 
 
+def _source_key(program: dict) -> Optional[tuple]:
+    company = program.get("company")
+    source_url = program.get("source_url")
+    if company and source_url:
+        return (company, source_url)
+    return None
+
+
 def merge_programs(existing: list[dict], new: list[dict]) -> list[dict]:
     """
-    Merge new programs with existing ones, avoiding duplicates by ID
+    Merge new programs with existing ones, avoiding duplicates by ID.
+    If the ID changed because the program name was corrected, replace the
+    existing row that shares the same company + source_url.
     """
     # Start with a de-duplicated copy of existing programs.
     merged = []
     id_to_index = {}
+    source_to_index = {}
     for program in existing:
         prog_id = program.get("id")
+        src_key = _source_key(program)
         if prog_id and prog_id in id_to_index:
-            merged[id_to_index[prog_id]] = program
+            idx = id_to_index[prog_id]
+            merged[idx] = program
+            if src_key:
+                source_to_index[src_key] = idx
         else:
             merged.append(program)
+            idx = len(merged) - 1
             if prog_id:
-                id_to_index[prog_id] = len(merged) - 1
+                id_to_index[prog_id] = idx
+            if src_key:
+                source_to_index[src_key] = idx
 
     # Add or update with new programs
     for new_prog in new:
         prog_id = new_prog.get("id")
-        if prog_id:
-            if prog_id in id_to_index:
-                # Update existing program
-                idx = id_to_index[prog_id]
-                merged[idx] = new_prog
-                logger.info(f"Updated existing program: {new_prog.get('name')} (ID: {prog_id})")
-            else:
-                # Add new program
-                merged.append(new_prog)
-                id_to_index[prog_id] = len(merged) - 1
-                logger.info(f"Added new program: {new_prog.get('name')} (ID: {prog_id})")
+        src_key = _source_key(new_prog)
+        if prog_id and prog_id in id_to_index:
+            idx = id_to_index[prog_id]
+            merged[idx] = new_prog
+            if src_key:
+                source_to_index[src_key] = idx
+            logger.info(f"Updated existing program: {new_prog.get('name')} (ID: {prog_id})")
+        elif src_key and src_key in source_to_index:
+            idx = source_to_index[src_key]
+            old_id = merged[idx].get("id")
+            merged[idx] = new_prog
+            if old_id:
+                id_to_index.pop(old_id, None)
+            if prog_id:
+                id_to_index[prog_id] = idx
+            source_to_index[src_key] = idx
+            logger.info(
+                f"Replaced program at same source URL: {new_prog.get('name')} (ID: {prog_id})"
+            )
+        elif prog_id:
+            merged.append(new_prog)
+            idx = len(merged) - 1
+            id_to_index[prog_id] = idx
+            if src_key:
+                source_to_index[src_key] = idx
+            logger.info(f"Added new program: {new_prog.get('name')} (ID: {prog_id})")
         else:
-            # No ID, treat as new (though this shouldn't happen with proper scrapers)
             merged.append(new_prog)
             logger.warning(f"Program missing ID, treating as new: {new_prog.get('name')}")
 
@@ -240,7 +273,10 @@ def main():
     save_programs(active_path, new_active)
     save_programs(archived_path, new_archived)
 
-    # README generation is handled by the workflow calling generate_dashboard.py
+    readme_path = os.path.join(project_root, "README.md")
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(generate_readme())
+    logger.info(f"Regenerated README at {readme_path}")
 
     logger.info("Scraping process completed")
     return 0

@@ -243,7 +243,7 @@ python scripts/test_end_to_end.py
 python scripts/validate_data.py
 ```
 
-Run `python scripts/scrape_programs.py` to refresh catalog data, then `python scripts/generate_dashboard.py` to regenerate this README.
+Run `python scripts/scrape_programs.py` to refresh catalog data and regenerate this README.
 
 """
 

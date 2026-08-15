@@ -1,49 +1,43 @@
 {
-  "description": "Companies parked after Phase 1 allowlist audit — not production-scrapeable yet",
-  "version": "1.0",
-  "last_updated": "2026-08-07",
+  "description": "Companies parked after allowlist audit — not production-scrapeable yet",
+  "version": "1.3",
+  "last_updated": "2026-08-08",
+  "audit_note": "Re-audit 2026-08-08 (run 3) per docs/ADD_COMPANIES.md. All five remain parked.",
   "candidates": [
     {
       "name": "Apple",
       "suspected_program": "Apple Campus Ambassador",
       "url": "https://www.apple.com/careers/us/work-at-apple/students.html",
-      "block_reason": "No public Campus Ambassador program page found. apple.com/education is marketing; careers students page covers jobs/internships only, not a campus ambassador apply flow matching the allowlist claim.",
-      "date": "2026-08-07"
-    },
-    {
-      "name": "Google",
-      "suspected_program": "Google Student Ambassador",
-      "url": null,
-      "block_reason": "Claimed hub students.google.com does not resolve. developers.google.com/community/gdsc redirects to a generic community page without a scrapeable Student Ambassador apply URL.",
-      "date": "2026-08-07"
+      "block_reason": "Students page lists internships and retail jobs only; no public Campus Ambassador or student community apply program.",
+      "date": "2026-08-08"
     },
     {
       "name": "Meta",
       "suspected_program": "Meta Campus Ambassador",
       "url": "https://www.metacareers.com/careerprograms/students",
-      "block_reason": "Legacy about.fb.com/careers/programs/{university,student} and tech.fb.com/campus URLs return 404. metacareers students page is early-career jobs, not a campus ambassador program.",
-      "date": "2026-08-07"
+      "block_reason": "metacareers.com/careerprograms/students returns HTTP 400 to automated fetches; no alternate public campus ambassador page found.",
+      "date": "2026-08-08"
     },
     {
       "name": "Netflix",
       "suspected_program": "Netflix Campus Ambassador",
       "url": "https://jobs.netflix.com/",
-      "block_reason": "jobs.netflix.com/early_talent returns 404. No public Campus Ambassador apply page found; only general careers hub.",
-      "date": "2026-08-07"
+      "block_reason": "No public Campus Ambassador apply page found; jobs.netflix.com is a general careers hub without a named student ambassador program.",
+      "date": "2026-08-08"
     },
     {
       "name": "Spotify",
       "suspected_program": "Spotify Student Ambassador",
       "url": "https://www.lifeatspotify.com/start-your-journey/students",
-      "block_reason": "Legacy spotify.com/us/jobs/early-talent and spotifyjobs.com/student URLs are dead or 'page not found'. Students hub is early-career/internship recruiting, not a student ambassador program.",
-      "date": "2026-08-07"
+      "block_reason": "Students hub is early-career/internship recruiting, not a student ambassador or campus community program.",
+      "date": "2026-08-08"
     },
     {
       "name": "Tesla",
       "suspected_program": "Tesla Student Ambassador",
       "url": "https://www.tesla.com/careers/students/",
-      "block_reason": "Public careers/education URLs return HTTP 403 Access Denied to automated fetches; not production-scrapeable under current access controls.",
-      "date": "2026-08-07"
+      "block_reason": "Public careers/students URLs return HTTP 403 Access Denied to automated fetches; not production-scrapeable under current access controls.",
+      "date": "2026-08-08"
     }
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for Phase 1 allowlist audit (WS0)."""
+"""Tests for allowlist audit and expansion batches."""
 
 from __future__ import annotations
 
@@ -11,12 +11,35 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 
+ALLOWLIST_NAMES = [
+    "Adobe",
+    "AMD",
+    "Arm",
+    "Canva",
+    "Coursera",
+    "Databricks",
+    "Elastic",
+    "Figma",
+    "GitHub",
+    "Google",
+    "IBM",
+    "JetBrains",
+    "Microsoft",
+    "MongoDB",
+    "Notion",
+    "NVIDIA",
+    "Salesforce",
+    "Unity",
+]
+
+CANDIDATE_NAMES = {"Apple", "Meta", "Netflix", "Spotify", "Tesla"}
+
 
 class AllowlistAuditTests(unittest.TestCase):
-    def test_allowlist_is_trimmed_to_scrapeable_keep_list(self):
+    def test_allowlist_matches_expansion_batch(self):
         data = json.loads((PROJECT_ROOT / "config" / "allowlist.json").read_text(encoding="utf-8"))
         names = [c["name"] for c in data["companies"]]
-        self.assertEqual(names, ["Adobe", "Microsoft", "GitHub"])
+        self.assertEqual(names, ALLOWLIST_NAMES)
         for company in data["companies"]:
             self.assertIn("program_url", company)
             self.assertTrue(company["program_url"].startswith("https://"))
@@ -24,13 +47,10 @@ class AllowlistAuditTests(unittest.TestCase):
     def test_candidates_cover_parked_companies(self):
         data = json.loads((PROJECT_ROOT / "config" / "candidates.json").read_text(encoding="utf-8"))
         names = {c["name"] for c in data["candidates"]}
-        self.assertEqual(
-            names,
-            {"Apple", "Google", "Meta", "Netflix", "Spotify", "Tesla"},
-        )
+        self.assertEqual(names, CANDIDATE_NAMES)
         for candidate in data["candidates"]:
             self.assertTrue(candidate.get("block_reason"))
-            self.assertEqual(candidate.get("date"), "2026-08-07")
+            self.assertEqual(candidate.get("date"), "2026-08-08")
             self.assertIn("suspected_program", candidate)
 
     def test_allowlist_and_candidates_are_disjoint(self):
@@ -78,7 +98,6 @@ class AllowlistAuditTests(unittest.TestCase):
                 "short_description": "Keep",
             },
         ]
-        # Only archive the Adobe id from the full decision map for this unit test
         decisions = {
             "550e8400-e29b-41d4-a716-446655440000": ARCHIVE_DECISIONS[
                 "550e8400-e29b-41d4-a716-446655440000"
