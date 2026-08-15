@@ -13,13 +13,7 @@ if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
-from scraper_parse_utils import (
-    first_paragraph,
-    infer_status_from_text,
-    page_text,
-    snippet_from_text,
-    today_iso,
-)
+from scraper_parse_utils import first_paragraph, page_text, snippet_from_text, today_iso
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +56,14 @@ class NotionScraper(EnhancedBaseScraper):
                 apply_url = href
                 break
 
+        rolling_signals = ("sign up", "free plus plan", "free education plan")
+        status = "Rolling" if any(signal in lower for signal in rolling_signals) else "Unknown"
+
         return {
             "name": CANONICAL_PROGRAM_NAME,
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": status,
             "role_type": "Fellowship/Scholarship-adjacent",
             "domain": "Education/EdTech",
             "eligibility_summary": "Students and educators using Notion in academic settings",

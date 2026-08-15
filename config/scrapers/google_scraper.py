@@ -13,13 +13,7 @@ if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
-from scraper_parse_utils import (
-    first_paragraph,
-    infer_status_from_text,
-    page_text,
-    snippet_from_text,
-    today_iso,
-)
+from scraper_parse_utils import first_paragraph, page_text, snippet_from_text, today_iso
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +56,13 @@ class GoogleScraper(EnhancedBaseScraper):
                 apply_url = href
                 break
 
+        status = "Accepting" if apply_url != COMMUNITY_URL else "Unknown"
+
         return {
             "name": CANONICAL_PROGRAM_NAME,
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": status,
             "role_type": "Student Expert/Leader",
             "domain": "Tech",
             "eligibility_summary": (

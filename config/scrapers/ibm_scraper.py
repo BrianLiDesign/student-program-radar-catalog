@@ -13,13 +13,7 @@ if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
-from scraper_parse_utils import (
-    first_paragraph,
-    infer_status_from_text,
-    page_text,
-    snippet_from_text,
-    today_iso,
-)
+from scraper_parse_utils import first_paragraph, page_text, snippet_from_text, today_iso
 
 logger = logging.getLogger(__name__)
 
@@ -71,11 +65,13 @@ class IBMScraper(EnhancedBaseScraper):
                     apply_url = f"https://skillsbuild.org{href}"
                     break
 
+        status = "Rolling" if apply_url != UNIVERSITY_STUDENTS_URL else "Unknown"
+
         return {
             "name": name,
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": status,
             "role_type": "Fellowship/Scholarship-adjacent",
             "domain": "Education/EdTech",
             "eligibility_summary": "University students (see SkillsBuild for current enrollment requirements)",

@@ -23,7 +23,8 @@ from scraper_parse_utils import (
 
 logger = logging.getLogger(__name__)
 
-MSA_URL = "https://mvp.microsoft.com/studentambassadors"
+MSA_URL = "https://learn.microsoft.com/en-us/training/student-hub/become-a-student-ambassador"
+MSA_APPLY_URL = "https://mvp.microsoft.com/studentambassadors"
 IMAGINE_CUP_URL = "https://imaginecup.microsoft.com/en-us"
 LEAP_URL = "https://leap.microsoft.com/en-US/"
 
@@ -32,7 +33,7 @@ PROGRAM_CONFIG = {
         "name": "Microsoft Learn Student Ambassador",
         "role_type": "Student Expert/Leader",
         "domain": "Tech",
-        "keywords": ("student ambassador", "microsoft student ambassadors"),
+        "keywords": ("student ambassador", "student ambassadors"),
     },
     IMAGINE_CUP_URL: {
         "name": "Microsoft Imagine Cup",
@@ -47,6 +48,24 @@ PROGRAM_CONFIG = {
         "keywords": ("leap", "apprenticeship"),
     },
 }
+
+
+def microsoft_program_status(url: str, text: str) -> str:
+    """Infer status from program-specific, explicit participation signals."""
+    lower = text.lower()
+    if url == MSA_URL and (
+        "no application required" in lower
+        or "no application or gatekeeping" in lower
+        or "get started" in lower
+    ):
+        return "Rolling"
+    if url == IMAGINE_CUP_URL and (
+        "register for next season" in lower
+        or "competition has concluded" in lower
+        or ("world championship" in lower and "showcased" in lower)
+    ):
+        return "Cohort upcoming"
+    return infer_status_from_text(text)
 
 
 class MicrosoftScraper(EnhancedBaseScraper):
@@ -76,7 +95,7 @@ class MicrosoftScraper(EnhancedBaseScraper):
             return None
 
         description = first_paragraph(soup) or config["name"]
-        apply_url = url
+        apply_url = MSA_APPLY_URL if url == MSA_URL else url
         for link in soup.find_all("a", href=True):
             href = link["href"]
             link_text = link.get_text(strip=True).lower()
@@ -88,7 +107,7 @@ class MicrosoftScraper(EnhancedBaseScraper):
             "name": config["name"],
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": microsoft_program_status(url, text),
             "role_type": config["role_type"],
             "domain": config["domain"],
             "eligibility_summary": (

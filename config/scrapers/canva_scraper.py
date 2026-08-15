@@ -13,13 +13,7 @@ if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
-from scraper_parse_utils import (
-    first_paragraph,
-    infer_status_from_text,
-    page_text,
-    snippet_from_text,
-    today_iso,
-)
+from scraper_parse_utils import first_paragraph, page_text, snippet_from_text, today_iso
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +56,13 @@ class CanvaScraper(EnhancedBaseScraper):
                 apply_url = href
                 break
 
+        status = "Rolling" if apply_url != EDUCATION_URL else "Unknown"
+
         return {
             "name": CANONICAL_PROGRAM_NAME,
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": status,
             "role_type": "Fellowship/Scholarship-adjacent",
             "domain": "Design/Creative",
             "eligibility_summary": "Students and educators (see Canva for Education for eligibility)",

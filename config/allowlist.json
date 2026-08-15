@@ -1,8 +1,8 @@
 {
   "description": "Allowlist of companies with a public, scrapeable student program/apply page",
-  "version": "1.5",
-  "last_updated": "2026-08-08",
-  "audit_note": "Batch 2026-08-08 (run 3): added AMD, Arm, Coursera, Elastic, Unity. Candidates re-audited; still parked. See docs/ADD_COMPANIES.md.",
+  "version": "1.6",
+  "last_updated": "2026-08-14",
+  "audit_note": "Live status audit completed 2026-08-14. All existing scraper integrations remain allowlisted; only records explicitly reported Closed are archived.",
   "companies": [
     {
       "name": "Adobe",
@@ -64,8 +64,8 @@
       "name": "GitHub",
       "known_programs": ["GitHub Campus Expert"],
       "base_url": "https://github.com/education",
-      "program_url": "https://github.com/education/students/campus-expert",
-      "notes": "Public Campus Experts page. Legacy education.github.com/programs/campus-experts returns 404; education.github.com/campus_experts redirects to login."
+      "program_url": "https://github.com/campus-experts?locale=en-US",
+      "notes": "Official Campus Experts organization documents eligibility and the annual July application window."
     },
     {
       "name": "Google",
@@ -96,8 +96,8 @@
         "Microsoft LEAP"
       ],
       "base_url": "https://mvp.microsoft.com",
-      "program_url": "https://mvp.microsoft.com/studentambassadors",
-      "notes": "MSA lives at mvp.microsoft.com/studentambassadors (learn.microsoft.com/.../studentambassadors 404). Imagine Cup at imaginecup.microsoft.com; LEAP at leap.microsoft.com."
+      "program_url": "https://learn.microsoft.com/en-us/training/student-hub/become-a-student-ambassador",
+      "notes": "Student Ambassadors has ongoing registration; Imagine Cup and LEAP use cycle-specific statuses."
     },
     {
       "name": "MongoDB",

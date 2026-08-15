@@ -41,7 +41,7 @@ GOOGLE_HTML = """
 <html><body>
 <h2>Lead a GDG</h2>
 <p>Google Developer Groups on Campus help students lead local developer communities.</p>
-<p>Apply now to lead a Google Developer Group on your campus.</p>
+<a href="https://app.advocu.com/gdg/join">Lead a GDG on Campus</a>
 </body></html>
 """
 

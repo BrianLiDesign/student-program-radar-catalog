@@ -52,11 +52,20 @@ jobs:
 
           MAX_STALE_DAYS = 60
           programs = json.loads(Path("data/active/programs.json").read_text(encoding="utf-8"))
+          allowlist = json.loads(Path("config/allowlist.json").read_text(encoding="utf-8"))
+          allowlisted_companies = {company["name"] for company in allowlist["companies"]}
           ids = [program["id"] for program in programs]
           if not programs:
               raise SystemExit("Catalog contains no active programs")
           if len(ids) != len(set(ids)):
               raise SystemExit("Catalog contains duplicate program IDs")
+          unexpected_companies = sorted(
+              {program["company"] for program in programs} - allowlisted_companies
+          )
+          if unexpected_companies:
+              raise SystemExit(
+                  f"Active catalog contains non-allowlisted companies: {unexpected_companies}"
+              )
 
           today = date.today()
           stale = []

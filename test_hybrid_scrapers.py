@@ -15,7 +15,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 sys.path.insert(0, str(PROJECT_ROOT / "config" / "scrapers"))
 
 from adobe_scraper import STUDENT_AMBASSADOR_URL, AdobeScraper
-from github_scraper import CAMPUS_EXPERT_URL, GitHubScraper
+from github_scraper import APPLICATION_URL, CAMPUS_EXPERT_URL, GitHubScraper, campus_expert_status
 from microsoft_scraper import IMAGINE_CUP_URL, LEAP_URL, MSA_URL, MicrosoftScraper
 
 from program_ids import generate_program_id
@@ -34,14 +34,16 @@ MSA_HTML = """
 <html><body>
 <h1>Microsoft Student Ambassadors</h1>
 <p>Microsoft Learn Student Ambassadors share technology with peers worldwide.</p>
-<p>Apply now to join the student ambassador community.</p>
+<p>Open to students from every background, with no application or gatekeeping.</p>
+<a href="https://mvp.microsoft.com/studentambassadors">Get started</a>
 </body></html>
 """
 
 IMAGINE_CUP_HTML = """
 <html><body>
 <h1>Imagine Cup</h1>
-<p>Imagine Cup is a global student technology competition.</p>
+<p>The 2026 Imagine Cup competition has concluded.</p>
+<p>Register for next season.</p>
 </body></html>
 """
 
@@ -56,7 +58,7 @@ GITHUB_HTML = """
 <html><body>
 <h1>Campus Experts</h1>
 <p>GitHub Campus Experts build diverse technology communities on campus.</p>
-<p>Become a campus expert and grow your local developer community.</p>
+<p>Applications to the program open every July for a month.</p>
 </body></html>
 """
 
@@ -107,12 +109,12 @@ class HybridScraperTests(unittest.TestCase):
         self.assertIn("Microsoft Learn Student Ambassador", names)
         self.assertIn("Microsoft Imagine Cup", names)
         self.assertIn("Microsoft LEAP Apprenticeship Program", names)
-        for program in programs:
-            self.assertEqual(
-                program["status"], "Accepting" if "Ambassador" in program["name"] else "Unknown"
-            )
+        statuses = {p["name"]: p["status"] for p in programs}
+        self.assertEqual(statuses["Microsoft Learn Student Ambassador"], "Rolling")
+        self.assertEqual(statuses["Microsoft Imagine Cup"], "Cohort upcoming")
+        self.assertEqual(statuses["Microsoft LEAP Apprenticeship Program"], "Unknown")
 
-    def test_github_scraper_uses_fetch_and_keeps_unknown_without_apply_signal(self):
+    def test_github_scraper_marks_program_closed_outside_july(self):
         scraper = GitHubScraper("GitHub", "https://github.com/education")
         with patch.object(scraper, "_fetch_page", return_value=_soup(GITHUB_HTML)):
             program = scraper.parse_program_page(CAMPUS_EXPERT_URL)
@@ -120,8 +122,12 @@ class HybridScraperTests(unittest.TestCase):
         self.assertIsNotNone(program)
         assert program is not None
         self.assertEqual(program["name"], "GitHub Campus Expert")
-        self.assertEqual(program["status"], "Unknown")
-        self.assertEqual(program["apply_url"], CAMPUS_EXPERT_URL)
+        self.assertEqual(program["status"], "Closed")
+        self.assertEqual(program["apply_url"], APPLICATION_URL)
+
+    def test_github_application_window_is_accepting_only_in_july(self):
+        self.assertEqual(campus_expert_status(GITHUB_HTML, month=7), "Accepting")
+        self.assertEqual(campus_expert_status(GITHUB_HTML, month=8), "Closed")
 
     def test_scraped_program_ids_match_canonical_uuid_v5(self):
         scraper = MicrosoftScraper("Microsoft", "https://mvp.microsoft.com")

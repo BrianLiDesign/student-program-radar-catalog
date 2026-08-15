@@ -8,24 +8,29 @@ from __future__ import annotations
 import logging
 import os
 import sys
+from datetime import date
 
 _scripts_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "scripts"))
 if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from scraper_framework import EnhancedBaseScraper
-from scraper_parse_utils import (
-    first_paragraph,
-    infer_status_from_text,
-    page_text,
-    snippet_from_text,
-    today_iso,
-)
+from scraper_parse_utils import first_paragraph, page_text, snippet_from_text, today_iso
 
 logger = logging.getLogger(__name__)
 
-CAMPUS_EXPERT_URL = "https://github.com/education/students/campus-expert"
+CAMPUS_EXPERT_URL = "https://github.com/campus-experts?locale=en-US"
+APPLICATION_URL = "https://github.com/education/students/campus-expert"
 CANONICAL_PROGRAM_NAME = "GitHub Campus Expert"
+
+
+def campus_expert_status(text: str, month: int | None = None) -> str:
+    """Return the status for GitHub's documented one-month July application window."""
+    lower = text.lower()
+    if "applications to the program open every july for a month" not in lower:
+        return "Unknown"
+    current_month = date.today().month if month is None else month
+    return "Accepting" if current_month == 7 else "Closed"
 
 
 class GitHubScraper(EnhancedBaseScraper):
@@ -56,7 +61,7 @@ class GitHubScraper(EnhancedBaseScraper):
             "GitHub Campus Experts are student leaders who build technical communities on campus."
         )
 
-        apply_url = CAMPUS_EXPERT_URL
+        apply_url = APPLICATION_URL
         for link in soup.find_all("a", href=True):
             href = link["href"]
             link_text = link.get_text(strip=True).lower()
@@ -68,7 +73,7 @@ class GitHubScraper(EnhancedBaseScraper):
             "name": name,
             "company": self.company_name,
             "apply_url": apply_url,
-            "status": infer_status_from_text(text),
+            "status": campus_expert_status(text),
             "role_type": "Student Expert/Leader",
             "domain": "Tech",
             "eligibility_summary": "Students enrolled in a degree-granting institution",
