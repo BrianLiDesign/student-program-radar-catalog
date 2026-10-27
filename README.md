@@ -30,7 +30,7 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 | Company | Program | Status | Comp | Location | Apply |
 |---------|---------|--------|------|----------|-------|
 | Princess Polly | Princess Polly College Ambassador Program | ✅ Accepting | Paid | Open to students at U.S. and Canadian colleges | [![Apply](assets/apply.svg)](https://princesspolly.aspireiq.com/join/CAP2627) |
-| Microsoft | Microsoft Imagine Cup | 🔵 Cohort upcoming | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://imaginecup.microsoft.com/en-us) |
+| Microsoft | Microsoft Imagine Cup | ⚪ Unknown | Unpaid-or-perks | Global / varies by program | [![Apply](assets/apply.svg)](https://imaginecup.microsoft.com/en-us) |
 
 ## Fellowship/Scholarship-adjacent
 
@@ -70,9 +70,9 @@ A canonical, versioned, fully public catalog of student-facing non-internship pr
 - **Active Programs:** 24
 - **Accepting Applications:** 8
 - **Rolling Admissions:** 6
-- **Cohort Upcoming:** 1
+- **Cohort Upcoming:** 0
 - **Acceptance Rate:** 33.3%
-- **Avg Days Since Verification:** 0 days
+- **Avg Days Since Verification:** 3 days
 
 **Automation Health**: Last sweep: unavailable | Updated: unavailable | Failed scrapers: unavailable
 
@@ -115,4 +115,4 @@ This repository uses a dual license. See [NOTICE](NOTICE) for details.
 
 ## Last Updated
 
-*Last updated: 2026-08-15 by automated sweep process*
+*Last updated: 2026-10-27 by automated sweep process*
